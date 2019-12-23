@@ -1,15 +1,16 @@
 package GoOnline.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 //data transfer object
 public class LoginData {
 
+    @NotEmpty
     private String username;
+
+    @NotEmpty
     private String password;
 
-
-    public LoginData() {
-        //TODO: dodac hashowanie hasla
-    }
 
     public String getUsername() {
         return username;

@@ -25,15 +25,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").hasRole("USER").anyRequest().authenticated()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/game").hasRole("USER").anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
+                .formLogin().loginPage("/login").permitAll()
                 .and()
-                .logout()
-                .permitAll().and().rememberMe().
-                tokenValiditySeconds(1209600);
+                .logout().permitAll()
+                .and()
+                .rememberMe().tokenValiditySeconds(1209600);
     }
 
 }

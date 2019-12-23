@@ -30,15 +30,7 @@ public class AuthProvider implements AuthenticationProvider {
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Password incorrect");
         }
-        if (!userDetails.isAccountNonExpired()) {
-            throw new CredentialsExpiredException("Account expired");
-        }
-        if (!userDetails.isCredentialsNonExpired()) {
-            throw new CredentialsExpiredException("Password expired");
-        }
-        if (!userDetails.isAccountNonLocked()) {
-            throw new LockedException("Account locked");
-        }
+
 
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }

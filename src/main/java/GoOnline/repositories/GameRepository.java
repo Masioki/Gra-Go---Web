@@ -1,5 +1,6 @@
 package GoOnline.repositories;
 
+import GoOnline.domain.Game.Game;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -29,7 +30,7 @@ public class GameRepository {
         }
         return game;
     }
-
+/*
     //przyklad wlasnego polecenia SQL
     public GameStatus getGameStatus(int gameID) {
         GameStatus gameStatus = null;
@@ -43,5 +44,5 @@ public class GameRepository {
         }
         return gameStatus;
     }
-
+*/
 }

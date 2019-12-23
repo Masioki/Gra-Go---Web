@@ -1,0 +1,7 @@
+package GoOnline.domain.Game;
+
+public enum MoveType {
+    PASS,
+    MOVE,
+    SURRENDER
+}

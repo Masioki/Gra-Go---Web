@@ -4,6 +4,7 @@ import Commands.GameCommandType;
 import Commands.PawnColor;
 import GoOnline.domain.Game.Game;
 import GoOnline.domain.Game.GameObserver;
+import GoOnline.domain.Game.GameStatus;
 
 import java.util.*;
 import java.awt.*;
@@ -22,7 +23,7 @@ public class Bot extends Player implements GameObserver {
             }
         }
         Runnable r = () -> {
-            while (game.inProgress()) {
+            while (game.getGameStatus() == GameStatus.IN_PROGRESS) {
                 if (game.isPlayerTurn(this)) doMove();
             }
         };

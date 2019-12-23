@@ -1,21 +1,24 @@
-package GoOnline.database;
+package GoOnline.domain.Game;
+
+import GoOnline.domain.Player;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "move")
-public class Move implements Serializable{
+@Table(name = "move")//nie trzeba tego name pisac
+public class Move implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     private int id;
 
-    @Column(name = "x", nullable = false)
+    @OneToMany
+    private Player player;
+
     private int x;
 
-    @Column(name = "y", nullable = false)
     private int y;
 
     @Column(name = "gameID", nullable = false)
@@ -24,13 +27,9 @@ public class Move implements Serializable{
     @Column(name = "color", nullable = false)
     private boolean white;
 
-    public int getGameID() {
-        return gameID;
-    }
+    @Column(nullable = false)
+    private MoveType moveType;
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
 
     public int getId() {
         return id;
@@ -38,6 +37,14 @@ public class Move implements Serializable{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public int getX() {
@@ -56,11 +63,27 @@ public class Move implements Serializable{
         this.y = y;
     }
 
+    public int getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
+    }
+
     public boolean isWhite() {
         return white;
     }
 
     public void setWhite(boolean white) {
         this.white = white;
+    }
+
+    public MoveType getMoveType() {
+        return moveType;
+    }
+
+    public void setMoveType(MoveType moveType) {
+        this.moveType = moveType;
     }
 }

@@ -1,5 +1,6 @@
 package GoOnline.services;
 
+import GoOnline.domain.Player;
 import GoOnline.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepository.getUser(s);
+        Player p = new Player();
+        return p;//return userRepository.getUser(s);
     }
 
 

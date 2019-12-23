@@ -12,9 +12,9 @@ import java.util.*;
 
 public class Player implements UserDetails {
 
-    // private ClientState state;
     protected Game game;
     protected String username;
+    protected String password;
 
 
     public boolean move(int x, int y) {
@@ -45,22 +45,27 @@ public class Player implements UserDetails {
 
     /* getters setters */
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public Game getGame() {
         return game;
     }
 
     public void setGame(Game game) {
+        if (this.game != null) this.game.surrender(this);
         this.game = game;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     //Security
     @Override
@@ -70,34 +75,33 @@ public class Player implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Player)) return false;
         Player player = (Player) o;
         return username.equals(player.username);
     }
