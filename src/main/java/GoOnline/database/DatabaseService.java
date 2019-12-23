@@ -11,21 +11,19 @@ public class DatabaseService {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private DatabaseService()
-    {
+    private DatabaseService() {
 
     }
-    public DatabaseService getInstance()
-    {
-        if(databaseService == null)
-        {
+
+    public DatabaseService getInstance() {
+        if (databaseService == null) {
             databaseService = new DatabaseService();
         }
         return databaseService;
     }
+
     //zapisujemy grę do bazy
-    public void putGame(Game game)
-    {
+    public void putGame(Game game) {
         Transaction transaction = null;
         try {
             System.out.println("check");
@@ -33,7 +31,7 @@ public class DatabaseService {
             transaction = session.beginTransaction();
             session.save(game);
             transaction.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (transaction != null && transaction.getStatus().canRollback()) {
                 transaction.rollback();
                 e.printStackTrace();
@@ -41,8 +39,7 @@ public class DatabaseService {
         }
     }
 
-    public Game getGame(int id)
-    {
+    public Game getGame(int id) {
         Transaction transaction = null;
         Game game = null;
         try (Session session = sessionFactory.openSession()) {
@@ -58,8 +55,7 @@ public class DatabaseService {
         return game;
     }
 
-    public void refreshGame(Game game)
-    {
+    public void refreshGame(Game game) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -73,8 +69,7 @@ public class DatabaseService {
         }
     }
 
-    public void mergeGame(Game game)
-    {
+    public void mergeGame(Game game) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();

@@ -4,6 +4,7 @@ package GoOnline.domain.Game;
 import Commands.GameCommandType;
 import Commands.PawnColor;
 import GoOnline.domain.Player;
+import GoOnline.dto.GameData;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -182,6 +183,12 @@ public class Game {
     }
 
     /* Getters Setters */
+    public GameData getGameData() {
+        GameData gameData = new GameData();
+        gameData.setGameID(gameID);
+        gameData.setUsername(owner.getUsername());
+        return gameData;
+    }
 
     public int getGameID() {
         return gameID;
@@ -262,4 +269,6 @@ public class Game {
     public void setMoves(LinkedList<Move> moves) {
         this.moves = moves;
     }
+
+
 }

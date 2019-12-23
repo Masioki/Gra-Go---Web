@@ -11,12 +11,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
+
 @Entity
 @Table(name = "player")
 public class Player implements UserDetails {
 
-    @OneToOne
-    private Game game;
+    @ManyToMany
+    private List<Game> games;
 
     public int getId() {
         return id;
@@ -33,59 +35,42 @@ public class Player implements UserDetails {
 
     @Column(name = "username", nullable = false)
     private String username;
-    @Column(name = "password", nullable= false)
+    @Column(name = "password", nullable = false)
     private String password;
-
-    public Set<Move> getMoves() {
-        return moves;
-    }
-
-    public void setMoves(Set<Move> moves) {
-        this.moves = moves;
-    }
 
     //nasza zależność
     //TODO - cascade
-   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<Move> moves;
-    public boolean move(int x, int y) {
+
+    public boolean move(int x, int y,Game game) {
         if (game == null) return false;
-        //TODO - trzeba poprawić
         //return game.move(x, y, this);
         return false;
     }
 
-    public boolean pass() {
+    public boolean pass(Game game) {
         if (game == null) return false;
         return game.pass(this);
     }
 
-    public void surrender() {
+    public void surrender(Game game) {
         if (game != null)
             game.surrender(this);
     }
 
-    public Point getScore() {
+    public Point getScore(Game game) {
         int own = game.getOwnScore(username);
         int opponent = game.getOpponentScore(username);
         return new Point(own, opponent);
     }
 
-    public Map<Point, PawnColor> getCurrentGameBoard() {
+    public Map<Point, PawnColor> getCurrentGameBoard(Game game) {
         if (game == null) return new HashMap<>();
         return game.getBoard();
     }
 
     /* getters setters */
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        if (this.game != null) this.game.surrender(this);
-        this.game = game;
-    }
 
     @Override
     public String getUsername() {
@@ -98,6 +83,22 @@ public class Player implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+
+    public Set<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(Set<Move> moves) {
+        this.moves = moves;
     }
 
     //Security

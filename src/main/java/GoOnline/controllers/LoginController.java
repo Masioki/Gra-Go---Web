@@ -41,13 +41,13 @@ public class LoginController {
     public String register(@Valid @ModelAttribute("user") LoginData dto, BindingResult result, Model model, RedirectAttributes atr) {
         if (result.hasErrors()) {
             atr.addAttribute("baddata");
-            return "redirect:/register";
+            return "register";
         }
         try {
             service.registerUser(dto);
         } catch (Exception e) {
             atr.addAttribute("userexists");
-            return "redirect:/register";
+            return "register";
         }
         model.addAttribute("user", dto);
         return "redirect:/game/lobby";
