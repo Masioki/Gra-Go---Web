@@ -14,11 +14,12 @@ public class Move implements Serializable {
     @Column(name = "id", unique = true)
     private int id;
 
-    @OneToMany
+    @ManyToOne
     private Player player;
 
+    @Column(name = "x", nullable = true)
     private int x;
-
+    @Column(name = "y", nullable = true)
     private int y;
 
     @Column(name = "gameID", nullable = false)
@@ -85,5 +86,12 @@ public class Move implements Serializable {
 
     public void setMoveType(MoveType moveType) {
         this.moveType = moveType;
+    }
+
+    public Move(int x, int y, boolean white)
+    {
+        this.x = x;
+        this.y = y;
+        this.white = white;
     }
 }

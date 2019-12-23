@@ -5,24 +5,38 @@ import Commands.GameCommandType;
 import Commands.PawnColor;
 import GoOnline.domain.Player;
 
+import javax.persistence.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-
+@Entity
+@Table(name = "game")
 public class Game {
 
-
+    @Id
+    @Column(name = "id", unique = true)
     private int gameID;
+    //TODO - podwójna zależność do sprawdzenia
+    @OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
     private Player owner;
+    @OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
     private Player opponent;
+    //mówimy hibernetowi że tej zmiennej ma nie ruszać
+    @Transient
     private List<GameObserver> observers;// nie mapowac
+    @Transient
     private GameLogic gameLogic;
+    @Column(name = "boardSize", nullable = false)
     private int boardSize;
+    @Transient
     private String lastMoved;
+    @Transient
     private boolean pass;
+    @Transient
     private GameStatus gameStatus;
+    @Transient
     private LinkedList<Move> moves;
 
 

@@ -15,7 +15,8 @@ public class Bot extends Player implements GameObserver {
     private Map<Point, PawnColor> board;
 
     public Bot(int boardSize, Game game) {
-        username = "bot";
+        setUsername("bot");
+        //username = "bot";
         board = new HashMap<>();
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
