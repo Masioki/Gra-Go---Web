@@ -1,0 +1,89 @@
+/*Styl naglowka*/
+header{
+    width: 100%;
+    height: 100px;
+    background-color:black;
+    color: white;
+    font-size: 70px;
+    text-align: center;
+    border:2px solid red;
+    border-radius: 10px;
+}
+/*styl bazowy ciala*/
+body{
+    background-image:url("../Images/BasicBackground.jpg");
+    background-size:cover;
+}
+/*bazowe paragrafy*/
+p{
+    font-size:15px;
+    text-align:center;
+    color:white;
+}
+/*bazowo ustawiam obrazki*/
+img{
+    border:2px solid black;
+    border-radius: 10px;
+    width: 275px;
+    height: 275px;
+}
+/*bazowo ustawiam naglowki h1*/
+h1{
+    width: 100%;
+    font-size :50px;
+    text-align: center;
+}
+/*bazowo ustawiam nagłówki h2*/
+h2{
+    width: 100%;
+    font-size :30px;
+    text-align: center;
+}
+/*bazowo ustawiam nagłówki h4*/
+h4{
+    width: 100%;
+    font-size :20px;
+    text-align: center;
+    color: white;
+}
+/*wlasciwosci klasy sekcja*/
+.sekcja
+{
+    color:white;
+    margin-left:200px;
+    margin-right:200px;
+    text-align:center;
+    border:2px solid red;
+    border-radius: 10px;
+    background-image:url(../Content/Images/BackgroundDark.jpg);
+}
+/*ustawiam kolor naglowkom w klasie "sekcja"*/
+.sekcja h2
+{
+    color:red;
+}
+/*ustawiam kolor napisów w klasie blue*/
+.blue
+{
+    color:blue;
+}
+/*ustawiam wlasciwosci obiektów w klasie lini*/
+.linki
+{
+    border:2px solid black;
+    border-radius:10px;
+    margin-left:230px;
+    margin-right:230px;
+    background-image:url(../Content/Images/BackgroundDark.jpg);
+}
+/*ustawiam wlasciwosci obiektów li w klasie linki*/
+.linki li
+{
+    text-align:center;
+    color:red;
+}
+/*ustawiam wlasnosci obiektow klasy red*/
+.red
+{
+    color:red;
+}
