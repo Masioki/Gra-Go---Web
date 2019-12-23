@@ -3,23 +3,56 @@ package GoOnline.domain;
 
 import Commands.PawnColor;
 import GoOnline.domain.Game.Game;
+import GoOnline.domain.Game.Move;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.awt.*;
 import java.util.*;
-
+@Entity
+@Table(name = "player")
 public class Player implements UserDetails {
 
-    protected Game game;
-    protected String username;
-    protected String password;
+    @OneToOne
+    private Game game;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true)
+    private int id;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+    @Column(name = "password", nullable= false)
+    private String password;
+
+    public Set<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(Set<Move> moves) {
+        this.moves = moves;
+    }
+
+    //nasza zależność
+    //TODO - cascade
+   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private Set<Move> moves;
     public boolean move(int x, int y) {
         if (game == null) return false;
-        return game.move(x, y, this);
+        //TODO - trzeba poprawić
+        //return game.move(x, y, this);
+        return false;
     }
 
     public boolean pass() {

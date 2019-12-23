@@ -1,7 +1,6 @@
 package GoOnline.domain.Game;
 
 class GameGrid {
-    //TODO - angielska nazwa..
     private int breathsNumber;
 
     GameGrid() {
