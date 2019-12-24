@@ -20,19 +20,13 @@ public class UserRepository {
 
     //zwroc null gdy nie znaleziono
     public Player getPlayer(String username) {
-        Transaction transaction = null;
         Player player = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
             player = session.byNaturalId(Player.class)
                     .using("username",username)
                     .load();
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null && transaction.getStatus().canRollback()) {
-                transaction.rollback();
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
         return player;
     }

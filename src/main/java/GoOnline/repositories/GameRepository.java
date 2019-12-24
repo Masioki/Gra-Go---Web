@@ -1,6 +1,7 @@
 package GoOnline.repositories;
 
 import GoOnline.domain.Game.Game;
+import GoOnline.domain.Game.GameStatus;
 import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
 import org.hibernate.Session;
@@ -20,19 +21,12 @@ public class GameRepository {
     private SessionFactory sessionFactory;
 
 
-
     public Game getGame(int gameID) {
-        Transaction transaction = null;
         Game game = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
             game = session.get(Game.class, gameID);
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null && transaction.getStatus().canRollback()) {
-                transaction.rollback();
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
         return game;
     }
@@ -44,8 +38,9 @@ public class GameRepository {
         try {
             Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
+            session.saveOrUpdate(g);
             //zapisujemy otrzymane id
-            id = (Integer) session.save(g);
+            id = g.getGameID();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null && transaction.getStatus().canRollback()) {
@@ -64,7 +59,17 @@ public class GameRepository {
         try {
             Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            //TODO
+            //wyciągamy całą tabelkę
+            //TODO - intelijowi się nie podoba ale powino być oki
+            games = (List<Game>)session.createNativeQuery("SELECT * FROM game").addEntity(Game.class).getResultList();
+            //filtrujemy listęgier
+            for(Game g:games)
+            {
+                if(g.getGameStatus().equals(GameStatus.WAITING))
+                {
+                    gamesData.add( g.getGameData() );
+                }
+            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null && transaction.getStatus().canRollback()) {
@@ -72,6 +77,6 @@ public class GameRepository {
                 e.printStackTrace();
             }
         }
-        return null;
+        return gamesData;
     }
 }
