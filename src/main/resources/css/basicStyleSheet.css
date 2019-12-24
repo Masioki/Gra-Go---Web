@@ -20,6 +20,25 @@ p{
     text-align:center;
     color:white;
 }
+/*bazowo przyciski*/
+.przyciskMenu {
+    margin: 10px;
+    border:5px solid black;
+    background: red;
+    border-radius: 10px;
+    width: 200px;
+    height: 50px;
+    color: white;
+}
+.przyciskLobby {
+    margin: 10px;
+    border:5px solid red;
+    background: black;
+    border-radius: 10px;
+    width: 400px;
+    height: 50px;
+    color: white;
+}
 /*bazowo ustawiam obrazki*/
 img{
     border:2px solid black;
@@ -47,15 +66,15 @@ h4{
     color: white;
 }
 /*wlasciwosci klasy sekcja*/
-.sekcja
+.sekcjaLobby
 {
     color:white;
-    margin-left:200px;
-    margin-right:200px;
+    margin-left:80px;
+    margin-right:80px;
     text-align:center;
     border:2px solid red;
     border-radius: 10px;
-    background-image:url(../Content/Images/BackgroundDark.jpg);
+    background-image:url(../Images/BackgroundDark.jpg);
 }
 /*ustawiam kolor naglowkom w klasie "sekcja"*/
 .sekcja h2
@@ -74,7 +93,7 @@ h4{
     border-radius:10px;
     margin-left:230px;
     margin-right:230px;
-    background-image:url(../Content/Images/BackgroundDark.jpg);
+    background-image:url(../Images/BackgroundDark.jpg);
 }
 /*ustawiam wlasciwosci obiektów li w klasie linki*/
 .linki li
