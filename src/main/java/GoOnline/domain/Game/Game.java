@@ -35,7 +35,7 @@ public class Game {
     private String lastMoved;
     @Transient
     private boolean pass;
-    @Transient
+    @Column(name = "gameStatus", nullable = false)
     private GameStatus gameStatus;
     @Transient
     private LinkedList<Move> moves;

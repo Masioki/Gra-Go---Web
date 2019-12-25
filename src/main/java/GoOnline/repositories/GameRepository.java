@@ -61,14 +61,14 @@ public class GameRepository {
             transaction = session.beginTransaction();
             //wyciągamy całą tabelkę
             //TODO - intelijowi się nie podoba ale powino być oki
-            games = (List<Game>)session.createNativeQuery("SELECT * FROM game").addEntity(Game.class).getResultList();
+            games = (List<Game>)session.createNativeQuery("SELECT * FROM game WHERE game.gameStatus = WAITING").addEntity(Game.class).getResultList();
             //filtrujemy listęgier
             for(Game g:games)
             {
-                if(g.getGameStatus().equals(GameStatus.WAITING))
-                {
+                //if(g.getGameStatus().equals(GameStatus.WAITING))
+               // {
                     gamesData.add( g.getGameData() );
-                }
+               // }
             }
             transaction.commit();
         } catch (Exception e) {
