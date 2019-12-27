@@ -15,7 +15,7 @@
     }
 %>
 <%= errorVariable%>
-<form:form action="/login" method="POST" modelAttribute="loginData">
+<form:form name="login" action="/login" method="POST" modelAttribute="loginData">
     <div><form:label path="username"> User Name : <form:input path="username" type="text" name="username"/>
     </form:label></div>
     <div><form:label path="password"> Password: <form:input path="password" type="password" name="password"/>

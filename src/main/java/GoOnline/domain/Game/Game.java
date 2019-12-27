@@ -1,8 +1,7 @@
 package GoOnline.domain.Game;
 
-
-import Commands.GameCommandType;
-import Commands.PawnColor;
+import GoOnline.domain.GameCommandType;
+import GoOnline.domain.PawnColor;
 import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
 

@@ -24,12 +24,6 @@ public class LoginController {
         return "login";
     }
 
-
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginData") LoginData loginData, BindingResult result) {
-        return "register";
-    }
-
     @GetMapping(value = "/register")
     public String getRegisterPage(Model model) {
         model.addAttribute("loginData", new LoginData());
@@ -50,7 +44,7 @@ public class LoginController {
             return "register";
         }
         model.addAttribute("user", dto);
-        return "redirect:/game/lobby";
+        return "redirect:/login";
     }
 
 }

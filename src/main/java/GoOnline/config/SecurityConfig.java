@@ -24,13 +24,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/resources/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/game").hasRole("USER").anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/game/lobby")
                 .and()
                 .logout().permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/login")
                 .and()
                 .rememberMe().tokenValiditySeconds(1209600);
     }

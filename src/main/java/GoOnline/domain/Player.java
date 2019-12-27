@@ -1,7 +1,6 @@
 package GoOnline.domain;
 
 
-import Commands.PawnColor;
 import GoOnline.domain.Game.Game;
 import GoOnline.domain.Game.Move;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +17,7 @@ import java.util.List;
 public class Player implements UserDetails {
 
     @ManyToMany
-    private List<Game> games;
+    private List<Game> games;//TODO
 
     public int getId() {
         return id;
@@ -43,7 +42,7 @@ public class Player implements UserDetails {
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<Move> moves;
 
-    public boolean move(int x, int y,Game game) {
+    public boolean move(int x, int y, Game game) {
         if (game == null) return false;
         //return game.move(x, y, this);
         return false;
@@ -67,7 +66,7 @@ public class Player implements UserDetails {
 
     public Map<Point, PawnColor> getCurrentGameBoard(Game game) {
         if (game == null) return new HashMap<>();
-        return game.getBoard();
+        return null;//return game.getBoard();
     }
 
     /* getters setters */

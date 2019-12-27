@@ -23,7 +23,7 @@ public class UserRepository {
         Player player = null;
         try (Session session = sessionFactory.openSession()) {
             player = session.byNaturalId(Player.class)
-                    .using("username",username)
+                    .using("username", username)
                     .load();
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,7 +31,7 @@ public class UserRepository {
         return player;
     }
 
-    public void save(Player player){
+    public void save(Player player) {
         Transaction transaction = null;
         try {
             Session session = sessionFactory.openSession();

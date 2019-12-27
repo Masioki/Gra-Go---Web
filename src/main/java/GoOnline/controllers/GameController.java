@@ -47,7 +47,7 @@ public class GameController {
     public String getLobby(Model model, Authentication authentication) {
         model.addAttribute("ownGames", userService.getPlayerGames(authentication.getName()));
         model.addAttribute("gamesList", gameService.getActiveGames());
-        return "lobby";
+        return "/templates/lobbyPage.html";
     }
 
     @GetMapping("/game/join/{gameID}")
@@ -66,9 +66,9 @@ public class GameController {
         int gameID = gameService.createGame(authentication.getName());
         model.addAttribute("gameData", gameService.getGameData(gameID));
         model.addAttribute("moves", new ArrayList<MoveDTO>());
-        return "game";
+        return "../resources/html/gamePage.html";
     }
-
+/*
     @MessageMapping("/game/{gameID}")
     @SendTo("/topic/game/{gameID}")
     public String sendMessage(@DestinationVariable("gameID") int gameID, @Payload String message, Principal principal) {
@@ -85,5 +85,5 @@ public class GameController {
             return gson.toJson(messageDTO);
         }
     }
-
+*/
 }

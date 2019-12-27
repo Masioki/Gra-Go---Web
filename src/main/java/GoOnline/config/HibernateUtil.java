@@ -21,7 +21,7 @@ public class HibernateUtil {
                 Configuration configuration = new Configuration();
                 Properties properties = new Properties();
                 properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-                properties.put(Environment.URL, "jdbc:mysql://localhost:3306/projectTPDB?serverTimezone=UTC");
+                properties.put(Environment.URL, "jdbc:mysql://localhost:3306/Go?serverTimezone=UTC");
                 properties.put(Environment.USER, "root");
                 properties.put(Environment.PASS, "admin");
                 properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
@@ -30,11 +30,9 @@ public class HibernateUtil {
                 configuration.setProperties(properties);
 
                 //dodajemy klasy
-                configuration.addAnnotatedClass(Player.class);
-                configuration.addAnnotatedClass(Game.class);
-                configuration.addAnnotatedClass(Move.class);
-                //configuration.addAnnotatedClass(Invoice.class);
-                //tak dodajemy klasy do zmapowania do bazy
+             //   configuration.addAnnotatedClass(Player.class);
+               // configuration.addAnnotatedClass(Game.class);
+                //configuration.addAnnotatedClass(Move.class);
 
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()

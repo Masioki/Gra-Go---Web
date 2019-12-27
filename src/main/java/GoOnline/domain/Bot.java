@@ -1,7 +1,5 @@
 package GoOnline.domain;
 
-import Commands.GameCommandType;
-import Commands.PawnColor;
 import GoOnline.domain.Game.Game;
 import GoOnline.domain.Game.GameObserver;
 import GoOnline.domain.Game.GameStatus;
@@ -13,8 +11,10 @@ import java.util.List;
 public class Bot extends Player implements GameObserver {
 
     private Map<Point, PawnColor> board;
+    private Game game;
 
     public Bot(int boardSize, Game game) {
+        this.game = game;
         setUsername("bot");
         //username = "bot";
         board = new HashMap<>();
@@ -59,7 +59,7 @@ public class Bot extends Player implements GameObserver {
 
         int x = (int) Math.round(bestPoint.getX());
         int y = (int) Math.round(bestPoint.getY());
-        boolean result = move(x, y);
+        boolean result = move(x, y, game);
         if (!result) {
             moveToRandom();
         }
@@ -107,13 +107,13 @@ public class Bot extends Player implements GameObserver {
         boolean done = false;
         while (emptyPlaceList.size() != 0) {
             int index = (int) (Math.random() * (emptyPlaceList.size() - 1));
-            if (move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY())) {
+            if (move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY(), game)) {
                 done = true;
                 break;
             }
             emptyPlaceList.remove(index);
         }
-        if (!done) pass();
+        if (!done) pass(game);
 
     }
 }

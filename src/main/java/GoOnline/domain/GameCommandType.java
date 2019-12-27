@@ -1,4 +1,4 @@
-package Commands;
+package GoOnline.domain;
 
 public enum GameCommandType {
     PASS,
