@@ -28,13 +28,13 @@ public class HibernateUtil {
                 properties.put(Environment.SHOW_SQL, "true");
                 properties.put(Environment.HBM2DDL_AUTO, "create");
                 configuration.setProperties(properties);
-
+/*
                 //dodajemy klasy
-             //   configuration.addAnnotatedClass(Player.class);
-               // configuration.addAnnotatedClass(Game.class);
-                //configuration.addAnnotatedClass(Move.class);
+                configuration.addAnnotatedClass(Player.class);
+                configuration.addAnnotatedClass(Game.class);
+                configuration.addAnnotatedClass(Move.class);
 
-
+*/
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties())
                         .build();

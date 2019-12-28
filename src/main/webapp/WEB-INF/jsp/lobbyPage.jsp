@@ -6,67 +6,65 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!--dolaczam plik css z opisem graficznym strony-->
-    <link href="../static/css/basicStyleSheet.css" rel="stylesheet" type="text/css"/>
-    <title>Game</title>
+    <link href="/css/basicStyleSheet.css" rel="stylesheet" type="text/css"/>
+    <title>Lobby</title>
 </head>
 <body>
-<header>GAME</header>
+<header>LOBBY</header>
 <br/>
 <div class="row">
-    <div class="col-sm-3">
-        <section class="sekcjaGame">
+    <div class="col-sm-4">
+        <section class="sekcjaLobby">
             <h2>
-                TOOLS
+                ACTIVE GAMES
             </h2>
             <button class="przyciskMenu">
-                RETURN
+                CREATE GAME
             </button>
             <br/>
             <label>
-                PLAYER:
+                WYBRANA GRA:
             </label>
             <br/>
             <label>
-                nickname...
-            </label>
-            <br/>
-            <label>
-                POINTS:
-            </label>
-            <label>
-                0
-            </label>
-            <br>
-            <label>
-                ENEMY POINTS
-            </label>
-            <br>
-            <label>
-                0
+                UNACTIVE
             </label>
             <br/>
             <button class="przyciskMenu">
-                PAUSE
+                JOIN GAME
             </button>
+            <br/>
             <button class="przyciskMenu">
-                SURRENDER
+                PLAY AGAINST CP
             </button>
-
+            <br/>
         </section>
     </div>
-    <div class="col-sm-9">
-        <section class="sekcjaGame" id="sekcjaGameBoard">
+    <div class="col-sm-8">
+        <section class="sekcjaLobby">
             <h2>
-                GAME BOARD
+                LOBBY LIST
             </h2>
-            <table id="gameBoard">
-
-            </table>
+            <button class="przyciskLobby">
+                GAME IS DEAD...
+            </button>
+            <button class="przyciskLobby">
+                GAME IS DEAD...
+            </button>
+            <button class="przyciskLobby">
+                GAME IS DEAD...
+            </button>
+            <button class="przyciskLobby">
+                GAME IS DEAD...
+            </button>
+            <button class="przyciskLobby">
+                GAME IS DEAD...
+            </button>
         </section>
     </div>
 </div>
 <!--dolaczam java script-->
-<script src="../static/js/scriptGame.js"></script>
+<script src="/js/scriptLobby.js"></script>
 <!--bootstrap js-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

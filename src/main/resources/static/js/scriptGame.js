@@ -1,3 +1,32 @@
+var stompClient = null;
+var gameID = null;
+
+function connect(gameID) {
+    this.gameID = gameID;
+    var socket = new SockJS('/game/stompEndpoint');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe('/topic/game/' + gameID, function (message) {
+            var obj = JSON.parse(message);
+            var move = JSON.parse(obj.move);
+
+            if (obj.header === 'SUCCESS') {//TODO
+                placePawn(move.x, move.y, move.white)
+            }
+        });
+    });
+}
+
+//MOVE, PASS, SURRENDER
+function sendMove(x, y, type) {
+    if (stompClient != null && gameID != null) {
+        stompClient.send('/game/' + gameID, {}, JSON.stringify({
+            'x': x, 'y': y, 'commmandType': type
+        }));
+    }
+}
+
+
 function tableCreate() {
     var body = document.getElementById("gameBoard");
     var tbdy = document.createElement('tbody');

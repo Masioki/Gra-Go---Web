@@ -4,6 +4,7 @@ import GoOnline.domain.Game.Game;
 import GoOnline.domain.Game.Move;
 import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
+import GoOnline.dto.MoveDTO;
 import GoOnline.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,9 @@ public class GameService {
 
     public List<GameData> getActiveGames() {
         return gameRepository.getActiveGames();
+    }
+
+    public boolean move(int gameID, String username, MoveDTO move){
+        return false; //TODO
     }
 }

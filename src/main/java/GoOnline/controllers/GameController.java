@@ -43,47 +43,49 @@ public class GameController {
     @Autowired
     private Gson gson;
 
+
     @GetMapping("/game/lobby")
     public String getLobby(Model model, Authentication authentication) {
-        model.addAttribute("ownGames", userService.getPlayerGames(authentication.getName()));
-        model.addAttribute("gamesList", gameService.getActiveGames());
-        return "/templates/lobbyPage.html";
+        //model.addAttribute("ownGames", userService.getPlayerGames(authentication.getName()));
+        //model.addAttribute("gamesList", gameService.getActiveGames());
+        return "lobbyPage";
     }
+
 
     @GetMapping("/game/join/{gameID}")
     public String joinGame(@PathVariable("gameID") int gameID, Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
         if (!gameService.joinGame(gameID, authentication.getName())) {
             redirectAttributes.addAttribute("gameInProgress");
-            return "lobby";
+            return "lobbyPage";
         }
         model.addAttribute("gameData", gameService.getGameData(gameID));
         model.addAttribute("moves", gameService.getGameMoves(gameID));
-        return "game";
+        return "gamePage";
     }
+
 
     @GetMapping("/game/create")
     public String createGame(Model model, Authentication authentication) {
         int gameID = gameService.createGame(authentication.getName());
         model.addAttribute("gameData", gameService.getGameData(gameID));
         model.addAttribute("moves", new ArrayList<MoveDTO>());
-        return "../resources/html/gamePage.html";
+        return "gamePage";
     }
-/*
+
+
     @MessageMapping("/game/{gameID}")
     @SendTo("/topic/game/{gameID}")
-    public String sendMessage(@DestinationVariable("gameID") int gameID, @Payload String message, Principal principal) {
-        StompMessageDTO mes = gson.fromJson(message, StompMessageDTO.class);
-        MoveDTO move = mes.getMove();
-        if (!gameService.move(gameID, principal.getName(), dto)) {
+    public StompMessageDTO sendMessage(@DestinationVariable("gameID") int gameID, @Payload MoveDTO move, Principal principal) {
+        if (!gameService.move(gameID, principal.getName(), move)) {
             StompMessageDTO ret = new StompMessageDTO();
             ret.setStompMessageHeader(ERROR);
-            return gson.toJson(ret);
+            return ret;
         } else {
             StompMessageDTO messageDTO = new StompMessageDTO();
             messageDTO.setStompMessageHeader(SUCCESS);
             messageDTO.setMove(move);
-            return gson.toJson(messageDTO);
+            return messageDTO;
         }
     }
-*/
+
 }
