@@ -21,7 +21,7 @@ public class HibernateUtil {
                 Configuration configuration = new Configuration();
                 Properties properties = new Properties();
                 properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-                properties.put(Environment.URL, "jdbc:mysql://localhost:3306/Go?serverTimezone=UTC");
+                properties.put(Environment.URL, "jdbc:mysql://localhost:3306/go?serverTimezone=UTC");
                 properties.put(Environment.USER, "root");
                 properties.put(Environment.PASS, "admin");
                 properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");

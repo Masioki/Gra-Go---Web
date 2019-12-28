@@ -70,4 +70,8 @@ public class GameService {
     public boolean move(int gameID, String username, MoveDTO move){
         return false; //TODO
     }
+
+    public boolean isWhite(int gameID, String username){
+        return false;//TODO
+    }
 }

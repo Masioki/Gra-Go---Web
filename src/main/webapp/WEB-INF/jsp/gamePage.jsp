@@ -12,6 +12,9 @@
 <body>
 <header>GAME</header>
 <br/>
+
+<input type="hidden" id="moves" value="${moves}">
+
 <div class="row">
     <div class="col-sm-3">
         <section class="sekcjaGame">

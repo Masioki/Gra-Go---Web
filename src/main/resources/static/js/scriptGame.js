@@ -1,17 +1,30 @@
 var stompClient = null;
 var gameID = null;
+var username = null;
 
-function connect(gameID) {
-    this.gameID = gameID;
+$(document).ready(function () {
+    var movesJson = $('#moves');
+    var moves = JSON.parse(movesJson.val());
+    moves.forEach(placePawn);
+});
+
+function connect(ID) {
+    gameID = ID;
     var socket = new SockJS('/game/stompEndpoint');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/game/' + gameID, function (message) {
-            var obj = JSON.parse(message);
-            var move = JSON.parse(obj.move);
-
-            if (obj.header === 'SUCCESS') {//TODO
-                placePawn(move.x, move.y, move.white)
+            var move = JSON.parse(message);
+            if (message !== 'ERROR') {
+                if (move.commmandType === 'MOVE') {
+                    placePawn(move.x, move.y, move.white)
+                } else if (move.commmandType === 'PASS') {
+                    if (move.username === username) pass(true);
+                    else pass(false);
+                } else if (move.commmandType === 'SURRENDER') {
+                    if (move.username === username) surrender(true);
+                    else surrender(false);
+                }
             }
         });
     });
@@ -21,11 +34,25 @@ function connect(gameID) {
 function sendMove(x, y, type) {
     if (stompClient != null && gameID != null) {
         stompClient.send('/game/' + gameID, {}, JSON.stringify({
-            'x': x, 'y': y, 'commmandType': type
+            'x': x,
+            'y': y,
+            'commandType': type,
+            'username': username
         }));
     }
 }
 
+function pass(me) {
+    if (me) {
+
+    }
+}
+
+function surrender(me) {
+    if (me) {
+
+    }
+}
 
 function tableCreate() {
     var body = document.getElementById("gameBoard");

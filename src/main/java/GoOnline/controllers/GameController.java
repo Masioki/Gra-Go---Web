@@ -1,12 +1,6 @@
 package GoOnline.controllers;
 
-import GoOnline.domain.Game.Game;
-import GoOnline.domain.Game.Move;
-import GoOnline.domain.Player;
-import GoOnline.dto.GameData;
 import GoOnline.dto.MoveDTO;
-import GoOnline.dto.StompMessageDTO;
-import GoOnline.dto.StompMessageHeader;
 import GoOnline.services.GameService;
 import GoOnline.services.UserService;
 import com.google.gson.Gson;
@@ -15,21 +9,16 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
 
-import static GoOnline.dto.StompMessageHeader.ERROR;
-import static GoOnline.dto.StompMessageHeader.SUCCESS;
 
 @Controller
 public class GameController {
@@ -59,7 +48,7 @@ public class GameController {
             return "lobbyPage";
         }
         model.addAttribute("gameData", gameService.getGameData(gameID));
-        model.addAttribute("moves", gameService.getGameMoves(gameID));
+        model.addAttribute("moves", gson.toJson(gameService.getGameMoves(gameID)));
         return "gamePage";
     }
 
@@ -68,24 +57,20 @@ public class GameController {
     public String createGame(Model model, Authentication authentication) {
         int gameID = gameService.createGame(authentication.getName());
         model.addAttribute("gameData", gameService.getGameData(gameID));
-        model.addAttribute("moves", new ArrayList<MoveDTO>());
+        model.addAttribute("moves", gson.toJson(new ArrayList<MoveDTO>()));
         return "gamePage";
     }
 
 
     @MessageMapping("/game/{gameID}")
     @SendTo("/topic/game/{gameID}")
-    public StompMessageDTO sendMessage(@DestinationVariable("gameID") int gameID, @Payload MoveDTO move, Principal principal) {
-        if (!gameService.move(gameID, principal.getName(), move)) {
-            StompMessageDTO ret = new StompMessageDTO();
-            ret.setStompMessageHeader(ERROR);
-            return ret;
-        } else {
-            StompMessageDTO messageDTO = new StompMessageDTO();
-            messageDTO.setStompMessageHeader(SUCCESS);
-            messageDTO.setMove(move);
-            return messageDTO;
-        }
+    public String sendMessage(@DestinationVariable("gameID") int gameID, @Payload String message, Principal principal) {
+        MoveDTO move = gson.fromJson(message, MoveDTO.class);
+        if (move != null && gameService.move(gameID, principal.getName(), move)) {
+            move.setUsername(principal.getName());
+            move.setWhite(gameService.isWhite(gameID, principal.getName()));
+            return gson.toJson(move);
+        } else return "ERROR";
     }
 
 }
