@@ -67,10 +67,6 @@ public class Game {
         return false;
     }
 
-    public void addObserver(GameObserver observer) {
-        observers.add(observer);
-    }
-
     public int getOwnScore(String username) {
         if (username.equals(owner.getUsername())) return gameLogic.getFinalScore(true);
         return gameLogic.getFinalScore(false);
@@ -81,27 +77,7 @@ public class Game {
         return gameLogic.getFinalScore(true);
     }
 
-
-    public Map<Point, PawnColor> getBoard() {
-        Map<Point, GridState> board = gameLogic.getBoard();
-        Map<Point, PawnColor> newBoard = new HashMap<>(boardSize * boardSize);
-        for (Point p : board.keySet()) {
-            switch (board.get(p)) {
-                case WHITE -> newBoard.put(p, PawnColor.WHITE);
-                case BLACK -> newBoard.put(p, PawnColor.BLACK);
-                case EMPTY -> newBoard.put(p, PawnColor.EMPTY);
-            }
-        }
-        return newBoard;
-    }
-
-    /*
-    WYKONYWAC PO KAZDEJ UDANEJ AKCJI
-     */
-    private void signalObservers(int x, int y, String username, PawnColor color, GameCommandType type) {
-        observers.forEach(o -> o.action(x, y, username, color, type));
-    }
-
+    public
     /*
     LOGIKA
      */

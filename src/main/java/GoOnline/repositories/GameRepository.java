@@ -63,7 +63,7 @@ public class GameRepository {
             //TODO - intelijowi się nie podoba ale powino być oki
             //games = (List<Game>) session.createNativeQuery("SELECT * FROM game WHERE game.gameStatus = WAITING").addEntity(Game.class).getResultList();
             //tak to powinno byc - Wesołych świąt :D
-            String query = "SELECT * FROM game WHERE game.gameStatus = :status";
+            String query = "SELECT * FROM game WHERE game.gameStatus = :status ORDER BY rand() LIMIT 5";
             games = session
                     .createNativeQuery(query, Game.class)
                     .setParameter("status", GameStatus.WAITING)

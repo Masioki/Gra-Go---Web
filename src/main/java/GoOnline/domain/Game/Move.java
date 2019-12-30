@@ -22,7 +22,7 @@ public class Move implements Serializable {
     @Column(name = "y")
     private int y;
 
-    @Column(name = "gameID", nullable = false)
+    @Column(name = "gameID", nullable = false)//TODO powinno sie odnosic do gry a tak to tylko jakas liczba
     private int gameID;
 
     @Column(name = "color", nullable = false)
@@ -31,11 +31,6 @@ public class Move implements Serializable {
     @Column(nullable = false)
     private MoveType moveType;
 
-    public Move(int x, int y, boolean white) {
-        this.x = x;
-        this.y = y;
-        this.white = white;
-    }
 
     public int getId() {
         return id;

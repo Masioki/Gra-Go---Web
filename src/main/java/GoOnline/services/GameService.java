@@ -64,14 +64,21 @@ public class GameService {
     }
 
     public List<GameData> getActiveGames() {
-        return gameRepository.getActiveGames();
+        List<GameData> result = gameRepository.getActiveGames();
+        if (result == null) return new ArrayList<>();
+        return result;
     }
 
-    public boolean move(int gameID, String username, MoveDTO move){
+    public boolean move(int gameID, String username, MoveDTO move) {
+        Game g = gameRepository.getGame(gameID);
+        Player p = userService.getPlayer(username);
+        if (g == null || p == null) return false;
         return false; //TODO
     }
 
-    public boolean isWhite(int gameID, String username){
-        return false;//TODO
+    public boolean isWhite(int gameID, String username) {
+        Game g = gameRepository.getGame(gameID);
+        if (g != null) return g.getOwner().getUsername().equals(username);
+        return false;
     }
 }
