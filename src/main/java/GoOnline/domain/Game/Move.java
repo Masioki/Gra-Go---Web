@@ -1,5 +1,6 @@
 package GoOnline.domain.Game;
 
+import GoOnline.domain.PawnColor;
 import GoOnline.domain.Player;
 
 import java.io.Serializable;
@@ -23,13 +24,14 @@ public class Move implements Serializable {
     private int y;
 
     @Column(name = "gameID", nullable = false)//TODO powinno sie odnosic do gry a tak to tylko jakas liczba
-    private int gameID;
+    private Game game;
 
-    @Column(name = "color", nullable = false)
-    private boolean white;
+    private PawnColor color;
 
     @Column(nullable = false)
     private MoveType moveType;
+
+    private int number;
 
 
     public int getId() {
@@ -64,20 +66,20 @@ public class Move implements Serializable {
         this.y = y;
     }
 
-    public int getGameID() {
-        return gameID;
+    public Game getGame() {
+        return game;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-    public boolean isWhite() {
-        return white;
+    public PawnColor getColor() {
+        return color;
     }
 
-    public void setWhite(boolean white) {
-        this.white = white;
+    public void setColor(PawnColor color) {
+        this.color = color;
     }
 
     public MoveType getMoveType() {
@@ -88,5 +90,11 @@ public class Move implements Serializable {
         this.moveType = moveType;
     }
 
+    public int getNumber() {
+        return number;
+    }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
 }

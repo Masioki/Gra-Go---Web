@@ -37,7 +37,8 @@ public class Game {
     @Column(name = "gameStatus", nullable = false)
     private GameStatus gameStatus;
     @Transient
-    private LinkedList<Move> moves;
+    private List<Move> moves;
+    private int movesCount;
 
 
     public Game(Player owner, int boardSize) {
@@ -77,7 +78,7 @@ public class Game {
         return gameLogic.getFinalScore(true);
     }
 
-    public
+
     /*
     LOGIKA
      */
@@ -92,38 +93,46 @@ public class Game {
         return !player.getUsername().equals(lastMoved);
     }
 
-    public synchronized boolean move(Move move) {
+    public synchronized List<Move> move(Move move) throws Exception {
         int x = move.getX();
         int y = move.getY();
         Player player = move.getPlayer();
+        List<Move> resultMoves = new ArrayList<>();
         Map<Point, GridState> previous = new HashMap<>(gameLogic.getBoard());
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player) && gameLogic.placePawn(x, y, player.getUsername().equals(owner.getUsername()))) {
             PawnColor color;
             if (player.getUsername().equals(owner.getUsername())) color = PawnColor.WHITE;
             else color = PawnColor.BLACK;
-            signalObservers(x, y, player.getUsername(), color, GameCommandType.MOVE);
+            move.setNumber(++movesCount);
+            move.setColor(color);
+            move.setGame(this);
+            move.setMoveType(MoveType.MOVE);
+            resultMoves.add(move);
             Map<Point, GridState> after = gameLogic.getBoard();
             Map<Point, GridState> changes = new HashMap<>();
             for (Point point : after.keySet()) {
                 if (previous.get(point) != after.get(point)) changes.put(point, after.get(point));
             }
             for (Point p : changes.keySet()) {
-                switch (changes.get(p)) {
-                    case EMPTY -> signalObservers((int) p.getX(), (int) p.getY(), null, PawnColor.EMPTY, GameCommandType.MOVE);
-                    case WHITE -> signalObservers((int) p.getX(), (int) p.getY(), null, PawnColor.WHITE, GameCommandType.MOVE);
-                    case BLACK -> signalObservers((int) p.getX(), (int) p.getY(), null, PawnColor.BLACK, GameCommandType.MOVE);
-                }
+                Move m = new Move();
+                m.setX((int) p.getX());
+                m.setY((int) p.getY());
+                move.setNumber(++movesCount);
+                move.setColor(PawnColor.EMPTY);
+                move.setGame(this);
+                move.setMoveType(MoveType.MOVE);
+                resultMoves.add(m);
             }
             lastMoved = player.getUsername();
             pass = false;
-            moves.addLast(move);
-            return true;
+            moves.addAll(resultMoves);
+            return resultMoves;
         }
-        return false;
+        throw new Exception("Bad move");
     }
 
     //TODO: dodawanie do moves
-    public synchronized boolean pass(Player player) {
+    public synchronized boolean pass(Player player) throws Exception {
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player)) {
             if (pass) {
                 int white = getOwnScore(owner.getUsername());
@@ -152,7 +161,12 @@ public class Game {
 
     public synchronized void surrender(Player player) {
         if (gameStatus != GameStatus.FINISHED && (opponent.getUsername().equals(player.getUsername()) || owner.getUsername().equals(player.getUsername()))) {
-            signalObservers(0, 0, player.getUsername(), PawnColor.BLACK, GameCommandType.SURRENDER);
+            Move m = new Move();
+            m.setGame(this);
+            m.setMoveType(MoveType.SURRENDER);
+            m.setPlayer(player);
+            m.setNumber(++movesCount);
+            moves.add(m);
             gameStatus = GameStatus.FINISHED;
         }
     }
@@ -237,13 +251,19 @@ public class Game {
         this.gameStatus = gameStatus;
     }
 
-    public LinkedList<Move> getMoves() {
+    public List<Move> getMoves() {
         return moves;
     }
 
-    public void setMoves(LinkedList<Move> moves) {
+    public void setMoves(List<Move> moves) {
         this.moves = moves;
     }
 
+    public int getMovesCount() {
+        return movesCount;
+    }
 
+    public void setMovesCount(int movesCount) {
+        this.movesCount = movesCount;
+    }
 }

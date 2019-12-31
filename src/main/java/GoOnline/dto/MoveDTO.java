@@ -4,7 +4,7 @@ public class MoveDTO {
     private int x;
     private int y;
     private String commandType;
-    private boolean white;
+    private String color;
     private String username;
 
     public String getUsername() {
@@ -15,12 +15,12 @@ public class MoveDTO {
         this.username = username;
     }
 
-    public boolean isWhite() {
-        return white;
+    public String getColor() {
+        return color;
     }
 
-    public void setWhite(boolean white) {
-        this.white = white;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getCommandType() {
