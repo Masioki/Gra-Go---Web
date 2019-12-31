@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.ArrayList;
 
-
 @Controller
 public class GameController {
 
