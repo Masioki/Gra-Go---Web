@@ -45,6 +45,13 @@
             <h2>
                 LOBBY LIST
             </h2>
+            <!--TODO sprawdzicz czy działa-->
+            <c:forEach items="${gamesList}" var="gameData">
+                <button class="przyciskLobby" onclick="chooseGame(this.getText())">
+                    ${gameData.gameID}
+                </button>
+            </c:forEach>
+            <!--
             <button class="przyciskLobby" onclick="chooseGame(this.getText())">
                 GAME IS DEAD...
             </button>
@@ -60,6 +67,7 @@
             <button class="przyciskLobby" onclick="chooseGame(this.getText())">
                 GAME IS DEAD...
             </button>
+            -->
         </section>
     </div>
 </div>

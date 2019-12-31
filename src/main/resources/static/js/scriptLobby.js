@@ -18,5 +18,5 @@ function joinGame(gameID) {
     $.get({
         url: '/game/join/' + gameID
     })
-        .fail("Nie udało się dołączyć do gry. Spróbuj odświeżyć stronę i wybrać aktywną grę");
+        .fail(alert("Nie udało się dołączyć do gry. Spróbuj odświeżyć stronę i wybrać aktywną grę") );
 }
