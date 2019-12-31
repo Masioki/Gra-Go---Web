@@ -6,7 +6,6 @@ class GameGrid {
     GameGrid() {
         breathsNumber = 0;
     }
-
     public int getBreathsNumber() {
         return breathsNumber;
     }

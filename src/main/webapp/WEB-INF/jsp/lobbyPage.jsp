@@ -18,7 +18,7 @@
             <h2>
                 ACTIVE GAMES
             </h2>
-            <button class="przyciskMenu">
+            <button class="przyciskMenu" onclick="createGame()">
                 CREATE GAME
             </button>
             <br/>
@@ -26,8 +26,8 @@
                 WYBRANA GRA:
             </label>
             <br/>
-            <label>
-                UNACTIVE
+            <label id="labelChosenGame" onclick="startGame()">
+                0
             </label>
             <br/>
             <button class="przyciskMenu">
@@ -45,19 +45,19 @@
             <h2>
                 LOBBY LIST
             </h2>
-            <button class="przyciskLobby">
+            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
                 GAME IS DEAD...
             </button>
-            <button class="przyciskLobby">
+            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
                 GAME IS DEAD...
             </button>
-            <button class="przyciskLobby">
+            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
                 GAME IS DEAD...
             </button>
-            <button class="przyciskLobby">
+            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
                 GAME IS DEAD...
             </button>
-            <button class="przyciskLobby">
+            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
                 GAME IS DEAD...
             </button>
         </section>
