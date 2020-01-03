@@ -2,6 +2,7 @@ package GoOnline.domain.Game;
 
 import GoOnline.domain.PawnColor;
 import GoOnline.domain.Player;
+import GoOnline.dto.MoveDTO;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -26,13 +27,22 @@ public class Move implements Serializable {
     @Column(name = "gameID", nullable = false)//TODO powinno sie odnosic do gry a tak to tylko jakas liczba
     private Game game;
 
-    private PawnColor color;
+    private GridState color;
 
     @Column(nullable = false)
     private MoveType moveType;
 
     private int number;
 
+    public MoveDTO getDTO() {
+        MoveDTO m = new MoveDTO();
+        m.setUsername(player.getUsername());
+        m.setColor(color.name());
+        m.setCommandType(moveType.name());
+        m.setX(x);
+        m.setY(y);
+        return m;
+    }
 
     public int getId() {
         return id;
@@ -74,11 +84,11 @@ public class Move implements Serializable {
         this.game = game;
     }
 
-    public PawnColor getColor() {
+    public GridState getColor() {
         return color;
     }
 
-    public void setColor(PawnColor color) {
+    public void setColor(GridState color) {
         this.color = color;
     }
 

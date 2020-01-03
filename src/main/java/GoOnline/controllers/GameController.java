@@ -60,7 +60,7 @@ public class GameController {
         return "gamePage";
     }
 
-
+/*
     @MessageMapping("/game/{gameID}")
     @SendTo("/topic/game/{gameID}")
     public String sendMessage(@DestinationVariable("gameID") int gameID, @Payload String message, Principal principal) {
@@ -71,5 +71,5 @@ public class GameController {
             return gson.toJson(move);
         } else return "ERROR";
     }
-
+*/
 }

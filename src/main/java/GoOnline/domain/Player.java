@@ -42,14 +42,17 @@ public class Player implements UserDetails {
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<Move> moves;
 
-    public boolean move(int x, int y, Game game) {
-        if (game == null) return false;
-        //return game.move(x, y, this);
-        return false;
+    public List<Move> move(int x, int y, Game game) throws Exception {
+        if (game == null) return new ArrayList<>();
+        Move m = new Move();
+        m.setX(x);
+        m.setY(y);
+        m.setPlayer(this);
+        return game.move(m);
     }
 
-    public boolean pass(Game game) {
-        if (game == null) return false;
+    public Move pass(Game game) throws Exception{
+        if (game == null) throw new Exception("no available game");
         return game.pass(this);
     }
 

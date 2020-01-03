@@ -11,6 +11,8 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static GoOnline.domain.Game.GridState.*;
+
 @Entity
 @Table(name = "game")
 public class Game {
@@ -79,6 +81,20 @@ public class Game {
     }
 
 
+    public Map<Point, GridState> getBoard() {
+        Map<Point, GridState> result = new HashMap<>();
+        for (int x = 0; x < boardSize; x++) {
+            for (int y = 0; y < boardSize; y++) {
+                result.put(new Point(x, y), EMPTY);
+            }
+        }
+        for (Move m : moves) {
+            if (m.getMoveType() == MoveType.MOVE) {
+                result.replace(new Point(m.getX(), m.getY()), m.getColor());
+            }
+        }
+        return result;
+    }
     /*
     LOGIKA
      */
@@ -100,9 +116,9 @@ public class Game {
         List<Move> resultMoves = new ArrayList<>();
         Map<Point, GridState> previous = new HashMap<>(gameLogic.getBoard());
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player) && gameLogic.placePawn(x, y, player.getUsername().equals(owner.getUsername()))) {
-            PawnColor color;
-            if (player.getUsername().equals(owner.getUsername())) color = PawnColor.WHITE;
-            else color = PawnColor.BLACK;
+            GridState color;
+            if (player.getUsername().equals(owner.getUsername())) color = WHITE;
+            else color = BLACK;
             move.setNumber(++movesCount);
             move.setColor(color);
             move.setGame(this);
@@ -118,7 +134,7 @@ public class Game {
                 m.setX((int) p.getX());
                 m.setY((int) p.getY());
                 move.setNumber(++movesCount);
-                move.setColor(PawnColor.EMPTY);
+                move.setColor(EMPTY);
                 move.setGame(this);
                 move.setMoveType(MoveType.MOVE);
                 resultMoves.add(m);
@@ -132,31 +148,35 @@ public class Game {
     }
 
     //TODO: dodawanie do moves
-    public synchronized boolean pass(Player player) throws Exception {
+    public synchronized Move pass(Player player) throws Exception {
+        Move m = new Move();
+        m.setPlayer(player);
+        m.setNumber(++movesCount);
+        m.setGame(this);
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player)) {
             if (pass) {
                 int white = getOwnScore(owner.getUsername());
                 int black = getOpponentScore(owner.getUsername());
-                if (white == black) signalObservers(0, 0, null, PawnColor.BLACK, GameCommandType.DRAW);
-                else if (white > black)
-                    signalObservers(0, 0, owner.getUsername(), PawnColor.WHITE, GameCommandType.WIN);
-                else {
-                    List<Player> players = Arrays.asList(owner, opponent);
-                    for (Player p : players) {
-                        if (!owner.getUsername().equals(p.getUsername())) {
-                            signalObservers(0, 0, p.getUsername(), PawnColor.BLACK, GameCommandType.WIN);
-                            break;
-                        }
-                    }
-                }
+                Player p;
+                if (white == black) {
+                    m.setMoveType(MoveType.DRAW);
+                    moves.add(m);
+                    return m;
+                } else if (white > black) p = owner;
+                else p = opponent;
+                m.setPlayer(p);
+                m.setMoveType(MoveType.WIN);
                 gameStatus = GameStatus.FINISHED;
+                moves.add(m);
+                return m;
             }
             pass = true;
-            signalObservers(0, 0, player.getUsername(), PawnColor.BLACK, GameCommandType.PASS);
             lastMoved = player.getUsername();
-            return true;
+            m.setMoveType(MoveType.PASS);
+            moves.add(m);
+            return m;
         }
-        return false;
+        throw new Exception("wrong move");
     }
 
     public synchronized void surrender(Player player) {

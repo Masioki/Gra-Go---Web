@@ -1,16 +1,17 @@
 package GoOnline.domain;
 
-import GoOnline.domain.Game.Game;
-import GoOnline.domain.Game.GameObserver;
-import GoOnline.domain.Game.GameStatus;
+import GoOnline.domain.Game.*;
 
 import java.util.*;
 import java.awt.*;
 import java.util.List;
 
-public class Bot extends Player implements GameObserver {
+import static GoOnline.domain.Game.GridState.BLACK;
+import static GoOnline.domain.Game.GridState.EMPTY;
 
-    private Map<Point, PawnColor> board;
+public class Bot extends Player {
+
+    private Map<Point, GridState> board;
     private Game game;
 
     public Bot(int boardSize, Game game) {
@@ -20,7 +21,7 @@ public class Bot extends Player implements GameObserver {
         board = new HashMap<>();
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                board.put(new Point(i, j), PawnColor.EMPTY);
+                board.put(new Point(i, j), EMPTY);
             }
         }
         Runnable r = () -> {
@@ -32,8 +33,8 @@ public class Bot extends Player implements GameObserver {
         t.start();
     }
 
-    @Override
-    public void action(int x, int y, String username, PawnColor color, GameCommandType type) {
+    //TODO
+    public void action(int x, int y, String username, GridState color, GameCommandType type) {
         if (type == GameCommandType.MOVE) board.replace(new Point(x, y), color);
     }
 
@@ -42,7 +43,7 @@ public class Bot extends Player implements GameObserver {
         Point bestPoint = new Point(0, 0);
 
         for (Point p : board.keySet()) {
-            if (board.get(p) == PawnColor.EMPTY && countPointBreaths(board, p) >= 2) {
+            if (board.get(p) == GridState.EMPTY && countPointBreaths(board, p) >= 2) {
                 List<Point> list = new ArrayList<>();
                 list.add(p);
                 int temp = countGroupSize(p, list);
@@ -59,22 +60,24 @@ public class Bot extends Player implements GameObserver {
 
         int x = (int) Math.round(bestPoint.getX());
         int y = (int) Math.round(bestPoint.getY());
-        boolean result = move(x, y, game);
-        if (!result) {
+
+        try {
+            move(x, y, game);
+        } catch (Exception e) {
             moveToRandom();
         }
     }
 
-    private int countPointBreaths(Map<Point, PawnColor> map, Point point) {
+    private int countPointBreaths(Map<Point, GridState> map, Point point) {
         int breaths = 4;
         int x = (int) point.getX();
         int y = (int) point.getY();
 
         for (int i = 0; i < 3; i += 2)
-            if (map.get(new Point(x, y - 1 + i)) != PawnColor.EMPTY) breaths--;
+            if (map.get(new Point(x, y - 1 + i)) != EMPTY) breaths--;
 
         for (int j = 0; j < 3; j += 2)
-            if (map.get(new Point(x - 1 + j, y)) != PawnColor.EMPTY) breaths--;
+            if (map.get(new Point(x - 1 + j, y)) != EMPTY) breaths--;
 
         return breaths;
     }
@@ -85,13 +88,13 @@ public class Bot extends Player implements GameObserver {
         checked.add(point);
         for (int i = 0; i < 3; i += 2) {
             Point temp = new Point((int) point.getX(), (int) point.getY() + i - 1);
-            if (!checked.contains(temp) && board.get(temp) == PawnColor.BLACK) {
+            if (!checked.contains(temp) && board.get(temp) == BLACK) {
                 sum += countGroupSize(temp, checked);
             }
         }
         for (int i = 0; i < 3; i += 2) {
             Point temp = new Point((int) point.getX() + i - 1, (int) point.getY());
-            if (!checked.contains(temp) && board.get(temp) == PawnColor.BLACK) {
+            if (!checked.contains(temp) && board.get(temp) == BLACK) {
                 sum += countGroupSize(temp, checked);
             }
         }
@@ -101,19 +104,25 @@ public class Bot extends Player implements GameObserver {
     private void moveToRandom() {
         List<Point> emptyPlaceList = new ArrayList<>();
         for (Point p : board.keySet()) {
-            if (board.get(p) == PawnColor.EMPTY) emptyPlaceList.add(p);
+            if (board.get(p) == EMPTY) emptyPlaceList.add(p);
         }
-
         boolean done = false;
         while (emptyPlaceList.size() != 0) {
             int index = (int) (Math.random() * (emptyPlaceList.size() - 1));
-            if (move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY(), game)) {
+            try {
+                List<Move> m = move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY(), game);
                 done = true;
                 break;
+            } catch (Exception e) {
+                emptyPlaceList.remove(index);
             }
-            emptyPlaceList.remove(index);
+
         }
-        if (!done) pass(game);
+        if (!done) try {
+            pass(game);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

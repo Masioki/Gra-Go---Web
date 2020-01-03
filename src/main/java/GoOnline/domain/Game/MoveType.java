@@ -3,5 +3,7 @@ package GoOnline.domain.Game;
 public enum MoveType {
     PASS,
     MOVE,
-    SURRENDER
+    SURRENDER,
+    DRAW,
+    WIN
 }

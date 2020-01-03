@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -69,11 +70,24 @@ public class GameService {
         return result;
     }
 
-    public boolean move(int gameID, String username, MoveDTO move) {
+    public List<MoveDTO> move(int gameID, String username, MoveDTO move) throws Exception {
         Game g = gameRepository.getGame(gameID);
         Player p = userService.getPlayer(username);
-        if (g == null || p == null) return false;
-        return false; //TODO
+        if (g == null || p == null) return new ArrayList<>();
+        switch (move.getCommandType()) {
+            case "MOVE" -> {
+                List<Move> moveList = p.move(move.getX(), move.getY(), g);
+                List<MoveDTO> result = new ArrayList<>();
+                for (Move m : moveList) result.add(m.getDTO());
+                return result;
+            }
+            case "PASS" -> {
+                Move res = p.pass(g);
+                return Collections.singletonList(res.getDTO());
+            }
+            case "SURRENDER" -> p.surrender(g);
+        }
+        return new ArrayList<>();
     }
 
     public boolean isWhite(int gameID, String username) {
