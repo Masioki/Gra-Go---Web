@@ -20,7 +20,7 @@
     </form:label></div>
     <div><form:label path="password"> Password: <form:input path="password" type="password" name="password"/>
     </form:label></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="REGISTER"/></div>
 </form:form>
 </body>
 </html>
