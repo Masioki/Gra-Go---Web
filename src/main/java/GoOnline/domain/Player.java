@@ -14,29 +14,19 @@ import java.util.*;
 import java.util.List;
 
 @Entity
-@Table(name = "player")
 public class Player implements UserDetails, Serializable {
 
-
-    @OneToOne
-    private Game game;//TODO
-    /*
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
-    private int id;
-*/
-    @Id
-    @Column(name = "username", nullable = false)
+    @Column(nullable = false)
     private String username;
-    @Column(name = "password", nullable = false)
+
+    @Column(nullable = false)
     private String password;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "gameID")
+    private Game game;
 
-    //TO CHYBA MOZNA USUNAC
-    //TODO - cascade
-    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
-    private Set<Move> moves;
 
     public List<Move> move(int x, int y, Game game) throws Exception {
         if (game == null) return new ArrayList<>();
@@ -89,23 +79,6 @@ public class Player implements UserDetails, Serializable {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    /*
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-    */
-    public Set<Move> getMoves() {
-        return moves;
-    }
-
-    public void setMoves(Set<Move> moves) {
-        this.moves = moves;
     }
 
     //Security

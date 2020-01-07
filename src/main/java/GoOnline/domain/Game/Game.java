@@ -15,20 +15,16 @@ import java.util.concurrent.TimeUnit;
 import static GoOnline.domain.Game.GridState.*;
 
 @Entity
-@Table(name = "game")
-public class Game implements Serializable {
+public class Game implements  Serializable{
 
     @Id
-    @Column(name = "id", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gameID;
 
-    //TODO - podwójna zależność do sprawdzenia
-    @OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
-    private Player owner;
+    private String ownerUsername;
 
-    @OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
-    private Player opponent;
+    @OneToMany(mappedBy = "game")
+    private List<Player> players;
 
     @Transient//TODO : jest potrzebne
     private List<Move> moves;
@@ -49,11 +45,15 @@ public class Game implements Serializable {
     @Transient
     private boolean pass;
 
+    //Dla hibernate musi byc bezargumentowy konstruktor
+    public Game() {
 
-
+    }
 
     public Game(Player owner, int boardSize) {
-        this.owner = owner;
+        players = new ArrayList<>();
+        players.add(owner);
+        ownerUsername = owner.getUsername();
         this.boardSize = boardSize;
         gameLogic = new GameLogic(boardSize);
         pass = false;
@@ -97,29 +97,29 @@ public class Game implements Serializable {
     }
 
     public boolean addPlayer(Player player) {
-       /* if (!players.contains(player) && players.size() < 2) {
+        if (!players.contains(player) && players.size() < 2) {
             players.add(player);
-            return true;
-        }
-        return false;*/
-        if (opponent == null) {
-            opponent = player;
-            gameStatus = GameStatus.IN_PROGRESS;
             return true;
         }
         return false;
     }
 
     public int getOwnScore(String username) {
-        if (username.equals(owner.getUsername())) return gameLogic.getFinalScore(true);
+        if (username.equals(ownerUsername)) return gameLogic.getFinalScore(true);
         return gameLogic.getFinalScore(false);
     }
 
     public int getOpponentScore(String username) {
-        if (username.equals(owner.getUsername())) return gameLogic.getFinalScore(false);
+        if (username.equals(ownerUsername)) return gameLogic.getFinalScore(false);
         return gameLogic.getFinalScore(true);
     }
 
+    public Player getOwner() {
+        for (Player p : players) {
+            if (p.getUsername().equals(ownerUsername)) return p;
+        }
+        return null;
+    }
     /*
     LOGIKA
      */
@@ -141,9 +141,9 @@ public class Game implements Serializable {
         Player player = move.getPlayer();
         List<Move> resultMoves = new ArrayList<>();
         Map<Point, GridState> previous = new HashMap<>(gameLogic.getBoard());
-        if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player) && gameLogic.placePawn(x, y, player.getUsername().equals(owner.getUsername()))) {
+        if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player) && gameLogic.placePawn(x, y, player.getUsername().equals(ownerUsername))) {
             GridState color;
-            if (player.getUsername().equals(owner.getUsername())) color = WHITE;
+            if (player.getUsername().equals(ownerUsername)) color = WHITE;
             else color = BLACK;
             move.setNumber(++movesCount);
             move.setColor(color);
@@ -182,15 +182,28 @@ public class Game implements Serializable {
         m.setGame(this);
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player)) {
             if (pass) {
-                int white = getOwnScore(owner.getUsername());
-                int black = getOpponentScore(owner.getUsername());
-                Player p;
+                int white = getOwnScore(ownerUsername);
+                int black = getOpponentScore(ownerUsername);
+                Player p = null;
                 if (white == black) {
                     m.setMoveType(MoveType.DRAW);
                     moves.add(m);
                     return m;
-                } else if (white > black) p = owner;
-                else p = opponent;
+                } else if (white > black) {
+                    for (Player pl : players) {
+                        if (pl.getUsername().equals(ownerUsername)) {
+                            p = pl;
+                            break;
+                        }
+                    }
+                } else {
+                    for (Player pl : players) {
+                        if (!pl.getUsername().equals(ownerUsername)) {
+                            p = pl;
+                            break;
+                        }
+                    }
+                }
                 m.setPlayer(p);
                 m.setMoveType(MoveType.WIN);
                 gameStatus = GameStatus.FINISHED;
@@ -208,7 +221,7 @@ public class Game implements Serializable {
 
     public synchronized void surrender(Player player) {
         setGameLogicBoard();
-        if (gameStatus != GameStatus.FINISHED && (opponent.getUsername().equals(player.getUsername()) || owner.getUsername().equals(player.getUsername()))) {
+        if (gameStatus != GameStatus.FINISHED && (players.get(0).getUsername().equals(player.getUsername()) || players.get(1).getUsername().equals(player.getUsername()))) {
             Move m = new Move();
             m.setGame(this);
             m.setMoveType(MoveType.SURRENDER);
@@ -223,7 +236,7 @@ public class Game implements Serializable {
     public GameData getGameData() {
         GameData gameData = new GameData();
         gameData.setGameID(gameID);
-        gameData.setUsername(owner.getUsername());
+        gameData.setUsername(ownerUsername);
         return gameData;
     }
 
@@ -234,23 +247,6 @@ public class Game implements Serializable {
     public void setGameID(int gameID) {
         this.gameID = gameID;
     }
-
-    public Player getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
-
-    public Player getOpponent() {
-        return opponent;
-    }
-
-    public void setOpponent(Player opponent) {
-        this.opponent = opponent;
-    }
-
 
     public GameLogic getGameLogic() {
         return gameLogic;
@@ -306,5 +302,21 @@ public class Game implements Serializable {
 
     public void setMovesCount(int movesCount) {
         this.movesCount = movesCount;
+    }
+
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }

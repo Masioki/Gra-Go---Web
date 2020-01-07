@@ -35,8 +35,7 @@ public class GameRepository {
     public int save(Game g) {
         Transaction transaction = null;
         int id = -1;
-        try {
-            Session session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.saveOrUpdate(g);
             //zapisujemy otrzymane id

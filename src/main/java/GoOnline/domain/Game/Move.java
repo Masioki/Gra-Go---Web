@@ -8,15 +8,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "move")//nie trzeba tego name pisac
 public class Move implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
     private int id;
 
-    @ManyToOne //@JoinColumn
+    @ManyToOne //jednostronna relacja
     private Player player;
 
     @Column(name = "x")
