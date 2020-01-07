@@ -6,7 +6,7 @@
     <!--bootstrap css-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!--dolaczam plik css z opisem graficznym strony-->
+    <!--dolaczamy plik css z opisem graficznym strony-->
     <link href="/css/basicStyleSheet.css" rel="stylesheet" type="text/css"/>
     <title>Spring Security Example </title>
 </head>
@@ -34,7 +34,7 @@
     <button type="submit" onclick="location.href='/register'" value="register">REGISTER PAGE</button>
     <br/>
 </section>
-
+<!--bootstrap js-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
