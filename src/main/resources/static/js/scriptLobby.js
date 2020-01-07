@@ -1,9 +1,4 @@
-function createGame() {
-    $.get({
-        url: '/game/create'
-    })
-        .fail( alert("Nie udało się utworzyć gry-spróbuj ponownie!") );
-}
+
 function chooseGame(x) {
     var label = document.getElementById("labelChosenGame");
     label.innerText = x;

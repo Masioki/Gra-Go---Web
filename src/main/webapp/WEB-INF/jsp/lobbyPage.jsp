@@ -10,6 +10,13 @@
     <title>Lobby</title>
 </head>
 <body>
+<%
+    String errorVariable = "";
+    if (request.getParameter("gameInProgress") != null) {
+        errorVariable = "Zajęte";
+    }
+%>
+<%= errorVariable%>
 <header>LOBBY</header>
 <br/>
 <div class="row">
@@ -18,7 +25,7 @@
             <h2>
                 ACTIVE GAMES
             </h2>
-            <button class="przyciskMenu" onclick="createGame()">
+            <button class="przyciskMenu" onclick="location.href='/game/create'">
                 CREATE GAME
             </button>
             <br/>
