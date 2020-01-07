@@ -12,6 +12,7 @@
     <title>Register</title>
 </head>
 <body>
+<!--error -->
 <%
     String errorVariable = "";
     if (request.getParameter("userexists") != null) {
