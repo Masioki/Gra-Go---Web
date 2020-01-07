@@ -1,5 +1,7 @@
 package GoOnline.controllers;
 
+import GoOnline.domain.Game.Game;
+import GoOnline.dto.GameData;
 import GoOnline.dto.MoveDTO;
 import GoOnline.services.GameService;
 import GoOnline.services.UserService;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class GameController {
@@ -34,8 +37,17 @@ public class GameController {
 
     @GetMapping("/game/lobby")
     public String getLobby(Model model, Authentication authentication) {
-        //model.addAttribute("ownGames", userService.getPlayerGames(authentication.getName()));
-        //model.addAttribute("gamesList", gameService.getActiveGames());
+        GameData gameData;
+        try {
+            Game g = userService.getPlayerGame(authentication.getName());
+            gameData = g.getGameData();
+        } catch (Exception e) {
+            gameData = new GameData();
+        }
+        List<GameData> activeGames = gameService.getActiveGames();
+        if (activeGames == null) activeGames = new ArrayList<>();
+        model.addAttribute("ownGame", gameData);
+        model.addAttribute("gamesList", activeGames);
         return "lobbyPage";
     }
 

@@ -37,6 +37,7 @@ public class LoginController {
             atr.addAttribute("baddata");
             return "register";
         }
+        System.out.println("kontroler");
         try {
             service.registerUser(dto);
         } catch (Exception e) {

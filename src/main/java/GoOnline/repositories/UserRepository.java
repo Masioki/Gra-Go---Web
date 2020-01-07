@@ -22,9 +22,10 @@ public class UserRepository {
     public Player getPlayer(String username) {
         Player player = null;
         try (Session session = sessionFactory.openSession()) {
-            player = session.byNaturalId(Player.class)
+            /*player = session.byNaturalId(Player.class)
                     .using("username", username)
-                    .load();
+                    .load();*/
+            player = session.get(Player.class, username);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,10 +34,10 @@ public class UserRepository {
 
     public void save(Player player) {
         Transaction transaction = null;
-        try {
-            Session session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
-            session.save(player);
+            System.out.println("zapisuje");
+            session.saveOrUpdate(player);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null && transaction.getStatus().canRollback()) {

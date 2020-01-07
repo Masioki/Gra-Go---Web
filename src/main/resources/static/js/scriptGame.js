@@ -5,7 +5,7 @@ var username = null;
 $(document).ready(function () {
     var movesJson = $('#moves');
     var moves = JSON.parse(movesJson.val());
-    moves.forEach(placePawn);
+    moves.forEach(decodeMove);
 });
 
 function connect(ID) {
@@ -16,15 +16,7 @@ function connect(ID) {
         stompClient.subscribe('/topic/game/' + gameID, function (message) {
             var move = JSON.parse(message);
             if (message !== 'ERROR') {
-                if (move.commmandType === 'MOVE') {
-                    placePawn(move.x, move.y, move.white)
-                } else if (move.commmandType === 'PASS') {
-                    if (move.username === username) pass(true);
-                    else pass(false);
-                } else if (move.commmandType === 'SURRENDER') {
-                    if (move.username === username) surrender(true);
-                    else surrender(false);
-                }
+                decodeMove(move);
             }
         });
     });
@@ -42,6 +34,33 @@ function sendMove(x, y, type) {
     }
 }
 
+function decodeMove(move){
+    switch (move.commandType) {
+        case 'MOVE': {
+            placePawn(move.x, move.y, move.white);
+            break;
+        }
+        case 'PASS': {
+            if (move.username === username) pass(true);
+            else pass(false);
+            break;
+        }
+        case 'SURRENDER': {
+            if (move.username === username) surrender(true);
+            else surrender(false);
+            break;
+        }
+        case 'WIN' : {
+            if (move.username === username) win(true);
+            else win(false);
+        }
+        case 'DRAW': {
+            draw();
+            break;
+        }
+    }
+}
+
 function pass(me) {
     if (me) {
 
@@ -52,6 +71,14 @@ function surrender(me) {
     if (me) {
 
     }
+}
+
+function draw() {
+
+}
+
+function win(me) {
+
 }
 
 function tableCreate() {

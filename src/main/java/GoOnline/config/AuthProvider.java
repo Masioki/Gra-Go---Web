@@ -27,19 +27,22 @@ public class AuthProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
-        // UserDetails userDetails = userService.loadUserByUsername(username);
-        /*if (userDetails == null) {
+        UserDetails userDetails = userService.loadUserByUsername(username);
+        if (userDetails == null) {
             throw new BadCredentialsException("Username not found");
         }
+
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Password incorrect");
-        }*/
-        if (passwordEncoder.matches(password, passwordEncoder.encode("haslo"))) {
-            return new UsernamePasswordAuthenticationToken(new Player(), password, Collections.singletonList(new SimpleGrantedAuthority("USER")));
         }
 
-        return null;
-        //return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        /*
+        if (!username.equals(userDetails.getUsername())) {
+            throw new BadCredentialsException("Password incorrect");
+        }*/
+
+
+        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 
     @Override

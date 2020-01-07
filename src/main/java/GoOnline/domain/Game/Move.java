@@ -16,7 +16,7 @@ public class Move implements Serializable {
     @Column(name = "id", unique = true)
     private int id;
 
-    @ManyToOne
+    @ManyToOne //@JoinColumn
     private Player player;
 
     @Column(name = "x")
@@ -24,15 +24,21 @@ public class Move implements Serializable {
     @Column(name = "y")
     private int y;
 
-    @Column(name = "gameID", nullable = false)//TODO powinno sie odnosic do gry a tak to tylko jakas liczba
+    @ManyToOne
+    @JoinColumn(name = "gameID", nullable = false)
     private Game game;
 
+    @Enumerated(value = EnumType.STRING)
     private GridState color;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private MoveType moveType;
 
     private int number;
+
+
+
 
     public MoveDTO getDTO() {
         MoveDTO m = new MoveDTO();

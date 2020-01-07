@@ -26,15 +26,15 @@ public class HibernateUtil {
                 properties.put(Environment.PASS, "admin");
                 properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
                 properties.put(Environment.SHOW_SQL, "true");
-                properties.put(Environment.HBM2DDL_AUTO, "create");
+                properties.put(Environment.HBM2DDL_AUTO, "update");
                 configuration.setProperties(properties);
-/*
+
                 //dodajemy klasy
                 configuration.addAnnotatedClass(Player.class);
                 configuration.addAnnotatedClass(Game.class);
                 configuration.addAnnotatedClass(Move.class);
 
-*/
+
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties())
                         .build();

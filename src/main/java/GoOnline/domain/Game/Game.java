@@ -7,6 +7,7 @@ import GoOnline.dto.GameData;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,39 +16,45 @@ import static GoOnline.domain.Game.GridState.*;
 
 @Entity
 @Table(name = "game")
-public class Game {
+public class Game implements Serializable {
 
     @Id
     @Column(name = "id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gameID;
+
     //TODO - podwójna zależność do sprawdzenia
     @OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
     private Player owner;
+
     @OneToOne(mappedBy = "game", cascade = CascadeType.ALL)
     private Player opponent;
-    //mówimy hibernetowi że tej zmiennej ma nie ruszać
-    @Transient
-    private List<GameObserver> observers;// nie mapowac
-    @Transient
-    private GameLogic gameLogic;
+
+    @Transient//TODO : jest potrzebne
+    private List<Move> moves;
+
     @Column(name = "boardSize", nullable = false)
     private int boardSize;
-    @Transient
-    private String lastMoved;
-    @Transient
-    private boolean pass;
+
     @Column(name = "gameStatus", nullable = false)
     private GameStatus gameStatus;
-    @Transient
-    private List<Move> moves;
+
     private int movesCount;
+
+    //mówimy hibernetowi że tej zmiennej ma nie ruszać
+    @Transient
+    private GameLogic gameLogic;
+    @Transient
+    private String lastMoved;//TODO: zmienic na ostatni ruch z moves
+    @Transient
+    private boolean pass;
+
+
 
 
     public Game(Player owner, int boardSize) {
-        gameID = (int) (Math.random() * 1000);
         this.owner = owner;
         this.boardSize = boardSize;
-        observers = new ArrayList<>();
         gameLogic = new GameLogic(boardSize);
         pass = false;
         gameStatus = GameStatus.WAITING;
@@ -55,6 +62,39 @@ public class Game {
         moves = new LinkedList<>();
     }
 
+    //TODO uwzglednic licznik ruchu
+    private void setGameLogicBoard() {
+        if (gameLogic.getBoard().isEmpty()) {
+            gameLogic.setGridStateMap(getBoard());
+            Map<Point, GridState> result = new HashMap<>();
+            List<Move> previousMoves = new ArrayList<>(moves);
+            for (int x = 0; x < boardSize; x++) {
+                for (int y = 0; y < boardSize; y++) {
+                    result.put(new Point(x, y), EMPTY);
+                }
+            }
+            for (Move m : previousMoves) {
+                if (m.getMoveType() == MoveType.MOVE) {
+                    result.replace(new Point(m.getX(), m.getY()), m.getColor());
+                }
+            }
+        }
+    }
+
+    public Map<Point, GridState> getBoard() {
+        Map<Point, GridState> result = new HashMap<>();
+        for (int x = 0; x < boardSize; x++) {
+            for (int y = 0; y < boardSize; y++) {
+                result.put(new Point(x, y), EMPTY);
+            }
+        }
+        for (Move m : moves) {
+            if (m.getMoveType() == MoveType.MOVE) {
+                result.replace(new Point(m.getX(), m.getY()), m.getColor());
+            }
+        }
+        return result;
+    }
 
     public boolean addPlayer(Player player) {
        /* if (!players.contains(player) && players.size() < 2) {
@@ -80,21 +120,6 @@ public class Game {
         return gameLogic.getFinalScore(true);
     }
 
-
-    public Map<Point, GridState> getBoard() {
-        Map<Point, GridState> result = new HashMap<>();
-        for (int x = 0; x < boardSize; x++) {
-            for (int y = 0; y < boardSize; y++) {
-                result.put(new Point(x, y), EMPTY);
-            }
-        }
-        for (Move m : moves) {
-            if (m.getMoveType() == MoveType.MOVE) {
-                result.replace(new Point(m.getX(), m.getY()), m.getColor());
-            }
-        }
-        return result;
-    }
     /*
     LOGIKA
      */
@@ -110,6 +135,7 @@ public class Game {
     }
 
     public synchronized List<Move> move(Move move) throws Exception {
+        setGameLogicBoard();
         int x = move.getX();
         int y = move.getY();
         Player player = move.getPlayer();
@@ -147,8 +173,9 @@ public class Game {
         throw new Exception("Bad move");
     }
 
-    //TODO: dodawanie do moves
+
     public synchronized Move pass(Player player) throws Exception {
+        setGameLogicBoard();
         Move m = new Move();
         m.setPlayer(player);
         m.setNumber(++movesCount);
@@ -180,6 +207,7 @@ public class Game {
     }
 
     public synchronized void surrender(Player player) {
+        setGameLogicBoard();
         if (gameStatus != GameStatus.FINISHED && (opponent.getUsername().equals(player.getUsername()) || owner.getUsername().equals(player.getUsername()))) {
             Move m = new Move();
             m.setGame(this);
@@ -223,13 +251,6 @@ public class Game {
         this.opponent = opponent;
     }
 
-    public List<GameObserver> getObservers() {
-        return observers;
-    }
-
-    public void setObservers(List<GameObserver> observers) {
-        this.observers = observers;
-    }
 
     public GameLogic getGameLogic() {
         return gameLogic;

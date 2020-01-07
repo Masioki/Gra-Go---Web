@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import GoOnline.dto.LoginData;
 
 import javax.security.auth.login.AccountException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,16 +34,20 @@ public class UserService implements UserDetailsService {
     }
 
     public void registerUser(LoginData loginData) throws AccountException {
+        System.out.println("weszlo");
         UserDetails p = loadUserByUsername(loginData.getUsername());
+        System.out.println("przeszlo");
         if (p != null) throw new AccountException();
+        System.out.println("tworzy obiekt");
         Player player = new Player();
         player.setUsername(loginData.getUsername());
         player.setPassword(passwordEncoder.encode(loginData.getPassword()));
         userRepository.save(player);
     }
 
-    public List<Game> getPlayerGames(String name) {
+    public Game getPlayerGame(String name) throws Exception{
         Player p = userRepository.getPlayer(name);
-        return p.getGames();
+        if(p == null) throw new Exception();
+        return p.getGame();
     }
 }

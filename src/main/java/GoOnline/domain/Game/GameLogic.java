@@ -49,6 +49,14 @@ class GameLogic {
         return new HashMap<>(gridStateMap);
     }
 
+    public void setGridStateMap(Map<Point, GridState> gridStateMap) {
+        this.gridStateMap = gridStateMap;
+    }
+
+    public void setPreviousGridStateMap(Map<Point, GridState> previousGridStateMap) {
+        this.previousGridStateMap = previousGridStateMap;
+    }
+
     //x pierwsza współrzędna, y druga
     //metoda zwraca fałsz gdy nie uda się postawić pionka
     //prawdę w przeciwnym wypadku

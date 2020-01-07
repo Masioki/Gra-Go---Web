@@ -9,35 +9,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 
 @Entity
 @Table(name = "player")
-public class Player implements UserDetails {
+public class Player implements UserDetails, Serializable {
 
-    @ManyToMany
-    private List<Game> games;//TODO
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @OneToOne
+    private Game game;//TODO
+    /*
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     private int id;
-
+*/
+    @Id
     @Column(name = "username", nullable = false)
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
 
-    //nasza zależność
+
+    //TO CHYBA MOZNA USUNAC
     //TODO - cascade
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<Move> moves;
@@ -51,7 +47,7 @@ public class Player implements UserDetails {
         return game.move(m);
     }
 
-    public Move pass(Game game) throws Exception{
+    public Move pass(Game game) throws Exception {
         if (game == null) throw new Exception("no available game");
         return game.pass(this);
     }
@@ -87,14 +83,23 @@ public class Player implements UserDetails {
         this.password = password;
     }
 
-    public List<Game> getGames() {
-        return games;
+    public Game getGame() {
+        return game;
     }
 
-    public void setGames(List<Game> games) {
-        this.games = games;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
+    /*
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+    */
     public Set<Move> getMoves() {
         return moves;
     }

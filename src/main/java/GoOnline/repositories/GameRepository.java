@@ -66,7 +66,7 @@ public class GameRepository {
             String query = "SELECT * FROM game WHERE game.gameStatus = :status ORDER BY rand() LIMIT 5";
             games = session
                     .createNativeQuery(query, Game.class)
-                    .setParameter("status", GameStatus.WAITING)
+                    .setParameter("status", "WAITING")
                     .getResultList();
 
             //filtrujemy listęgier
