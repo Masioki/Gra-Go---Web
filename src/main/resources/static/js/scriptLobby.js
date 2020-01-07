@@ -10,8 +10,5 @@ function startGame() {
     joinGame(gameID);
 }
 function joinGame(gameID) {
-    $.get({
-        url: '/game/join/' + gameID
-    })
-        .fail(alert("Nie udało się dołączyć do gry. Spróbuj odświeżyć stronę i wybrać aktywną grę") );
+    window.location.replace('/game/join/' + gameID);
 }
