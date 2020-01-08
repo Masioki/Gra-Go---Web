@@ -1,6 +1,7 @@
 package GoOnline.services;
 
 import GoOnline.domain.Game.Game;
+import GoOnline.domain.Game.GameStatus;
 import GoOnline.domain.Game.Move;
 import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
@@ -31,6 +32,8 @@ public class GameService {
     public int createGame(String name) {
         Player p = userService.getPlayer(name);
         Game g = new Game(p, 19);
+        p.getGame().setGameStatus(GameStatus.INTERRUPTED);
+        p.setGame(g);
         return gameRepository.save(g);
     }
 
@@ -58,6 +61,8 @@ public class GameService {
         Game g = gameRepository.getGame(gameID);
         boolean result = g.addPlayer(p);
         if (result) {
+            if (gameID != g.getGameID() && p.getGame() != null) p.getGame().setGameStatus(GameStatus.INTERRUPTED);
+            p.setGame(g);
             gameRepository.save(g);
             return true;
         }

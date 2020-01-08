@@ -55,26 +55,15 @@ public class GameRepository {
         List<GameData> gamesData = new ArrayList<GameData>();
         List<Game> games = new ArrayList<Game>();
         Transaction transaction = null;
-        try {
-            Session session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            //wyciągamy całą tabelkę
-            //TODO - intelijowi się nie podoba ale powino być oki
-            //games = (List<Game>) session.createNativeQuery("SELECT * FROM game WHERE game.gameStatus = WAITING").addEntity(Game.class).getResultList();
-            //tak to powinno byc - Wesołych świąt :D
             String query = "SELECT * FROM game WHERE gameStatus = :status ORDER BY rand() LIMIT 5";
             games = session
                     .createNativeQuery(query, Game.class)
                     .setParameter("status", GameStatus.WAITING.name())
                     .getResultList();
 
-            //filtrujemy listęgier
-            for (Game g : games) {
-                //if(g.getGameStatus().equals(GameStatus.WAITING))
-                // {
-                gamesData.add(g.getGameData());
-                // }
-            }
+            for (Game g : games) gamesData.add(g.getGameData());
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null && transaction.getStatus().canRollback()) {

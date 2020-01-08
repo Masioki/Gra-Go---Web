@@ -100,6 +100,7 @@ public class Game implements Serializable {
         if (players.contains(player)) return true;
         if (players.size() < 2) {
             players.add(player);
+            gameStatus = GameStatus.IN_PROGRESS;
             return true;
         }
         return false;
