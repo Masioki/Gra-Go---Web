@@ -32,7 +32,10 @@ public class GameService {
     public int createGame(String name) {
         Player p = userService.getPlayer(name);
         Game g = new Game(p, 19);
-        if (p.getGame() != null) p.getGame().setGameStatus(GameStatus.INTERRUPTED);
+        if (p.getGame() != null) {
+            p.getGame().setGameStatus(GameStatus.INTERRUPTED);
+            gameRepository.save(p.getGame());
+        }
         p.setGame(g);
         return gameRepository.save(g);
     }
@@ -61,7 +64,10 @@ public class GameService {
         Game g = gameRepository.getGame(gameID);
         boolean result = g.addPlayer(p);
         if (result) {
-            if (gameID != g.getGameID() && p.getGame() != null) p.getGame().setGameStatus(GameStatus.INTERRUPTED);
+            if (gameID != g.getGameID() && p.getGame() != null) {
+                p.getGame().setGameStatus(GameStatus.INTERRUPTED);
+                gameRepository.save(p.getGame());
+            }
             p.setGame(g);
             gameRepository.save(g);
             return true;

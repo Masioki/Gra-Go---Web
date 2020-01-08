@@ -1,10 +1,8 @@
 package GoOnline.domain.Game;
 
-import GoOnline.domain.PawnColor;
 import GoOnline.domain.Player;
 import GoOnline.dto.MoveDTO;
 
-import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity

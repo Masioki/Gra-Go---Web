@@ -34,29 +34,34 @@ function sendMove(x, y, type) {
     }
 }
 
-function decodeMove(move){
-    switch (move.commandType) {
-        case 'MOVE': {
-            placePawn(move.x, move.y, move.white);
-            break;
-        }
-        case 'PASS': {
-            if (move.username === username) pass(true);
-            else pass(false);
-            break;
-        }
-        case 'SURRENDER': {
-            if (move.username === username) surrender(true);
-            else surrender(false);
-            break;
-        }
-        case 'WIN' : {
-            if (move.username === username) win(true);
-            else win(false);
-        }
-        case 'DRAW': {
-            draw();
-            break;
+function decodeMove(moveList) {
+    for (var i = 0; i < moveList.length; i++) {
+        var move = moveList[i];
+        switch (move.commandType) {
+            case 'MOVE': {
+                if (move.color === 'WHITE') placePawn(move.x, move.y, true);
+                else if (move.color === 'BLACK') placePawn(move.x, move.y, false);
+                else clearGrid(move.x, move.y);
+                break;
+            }
+            case 'PASS': {
+                if (move.username === username) pass(true);
+                else pass(false);
+                break;
+            }
+            case 'SURRENDER': {
+                if (move.username === username) surrender(true);
+                else surrender(false);
+                break;
+            }
+            case 'WIN' : {
+                if (move.username === username) win(true);
+                else win(false);
+            }
+            case 'DRAW': {
+                draw();
+                break;
+            }
         }
     }
 }
@@ -122,9 +127,3 @@ function clearGrid(x, y) {
     img.setAttribute('class', 'gameGrid');
     myTable.rows[x].cells[y].appendChild(img);
 }
-
-tableCreate();
-placePawn(3, 3, 1);
-placePawn(4, 4, 0);
-placePawn(5, 5, 0);
-clearGrid(4, 4);

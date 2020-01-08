@@ -2,6 +2,7 @@ package GoOnline.domain;
 
 
 import GoOnline.domain.Game.Game;
+import GoOnline.domain.Game.GridState;
 import GoOnline.domain.Game.Move;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,9 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.awt.*;
-import java.io.Serializable;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 @Entity
 public class Player implements UserDetails {
@@ -23,7 +23,7 @@ public class Player implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "gameID")
     private Game game;
 
@@ -53,7 +53,7 @@ public class Player implements UserDetails {
         return new Point(own, opponent);
     }
 
-    public Map<Point, PawnColor> getCurrentGameBoard(Game game) {
+    public Map<Point, GridState> getCurrentGameBoard(Game game) {
         if (game == null) return new HashMap<>();
         return null;//return game.getBoard();
     }

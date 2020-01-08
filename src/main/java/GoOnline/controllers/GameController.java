@@ -46,7 +46,7 @@ public class GameController {
         }
         List<GameData> activeGames = gameService.getActiveGames();
         if (activeGames == null) activeGames = new ArrayList<>();
-        for(GameData d : activeGames){
+        for (GameData d : activeGames) {
             System.out.println(d.getGameID() + " " + d.getUsername());
         }
         model.addAttribute("ownGame", gameData);
@@ -68,23 +68,22 @@ public class GameController {
 
 
     @GetMapping("/game/create")
-    public String createGame(Model model, Authentication authentication) {
+    public String createGame(Authentication authentication) {
         int gameID = gameService.createGame(authentication.getName());
-        model.addAttribute("gameData", gameService.getGameData(gameID));
-        model.addAttribute("moves", gson.toJson(new ArrayList<MoveDTO>()));
-        return "gamePage";
+        return "redirect:/game/join/" + gameID;
     }
 
-/*
+
     @MessageMapping("/game/{gameID}")
     @SendTo("/topic/game/{gameID}")
     public String sendMessage(@DestinationVariable("gameID") int gameID, @Payload String message, Principal principal) {
         MoveDTO move = gson.fromJson(message, MoveDTO.class);
-        if (move != null && gameService.move(gameID, principal.getName(), move)) {
-            move.setUsername(principal.getName());
-            move.setWhite(gameService.isWhite(gameID, principal.getName()));
-            return gson.toJson(move);
-        } else return "ERROR";
+        try {
+            if (move != null) return gson.toJson(gameService.move(gameID, principal.getName(), move));
+        } catch (Exception e) {
+            return "ERROR";
+        }
+        return "ERROR";
     }
-*/
+
 }

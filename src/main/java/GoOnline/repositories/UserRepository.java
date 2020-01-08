@@ -23,9 +23,6 @@ public class UserRepository {
         Player player = null;
         System.out.println(username);
         try (Session session = sessionFactory.openSession()) {
-            /*player = session.byNaturalId(Player.class)
-                    .using("username", username)
-                    .load();*/
             player = session.get(Player.class, username);
         } catch (Exception e) {
             e.printStackTrace();

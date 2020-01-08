@@ -1,7 +1,5 @@
 package GoOnline.domain.Game;
 
-import GoOnline.domain.GameCommandType;
-import GoOnline.domain.PawnColor;
 import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
 import org.hibernate.annotations.Fetch;
@@ -9,9 +7,8 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.awt.*;
-import java.io.Serializable;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static GoOnline.domain.Game.GridState.*;
@@ -25,11 +22,11 @@ public class Game {
 
     private String ownerUsername;
 
-    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Player> players;
 
-    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Move> moves;
 
@@ -45,7 +42,7 @@ public class Game {
     @Transient
     private GameLogic gameLogic;
     @Transient
-    private String lastMoved;//TODO: zmienic na ostatni ruch z moves
+    private String lastMoved;
     @Transient
     private boolean pass;
 
@@ -66,33 +63,28 @@ public class Game {
         moves = new LinkedList<>();
     }
 
-    //TODO uwzglednic licznik ruchu
     private void setGameLogic() {
+        moves.stream().filter(m -> m.getNumber() == movesCount).findFirst().ifPresent(move -> {
+            lastMoved = move.getPlayer().getUsername();
+            pass = move.getMoveType().equals(MoveType.PASS);
+        });
         if (gameLogic.getBoard().isEmpty()) {
-            gameLogic.setGridStateMap(getBoard());
-            Map<Point, GridState> result = new HashMap<>();
+            moves.sort(Comparator.comparingInt(Move::getNumber));
+            gameLogic.setGridStateMap(getBoard(moves));
             List<Move> previousMoves = new ArrayList<>(moves);
-            for (int x = 0; x < boardSize; x++) {
-                for (int y = 0; y < boardSize; y++) {
-                    result.put(new Point(x, y), EMPTY);
-                }
-            }
-            for (Move m : previousMoves) {
-                if (m.getMoveType() == MoveType.MOVE) {
-                    result.replace(new Point(m.getX(), m.getY()), m.getColor());
-                }
-            }
+            previousMoves.remove(previousMoves.size() - 1);
+            gameLogic.setPreviousGridStateMap(getBoard(previousMoves));
         }
     }
 
-    public Map<Point, GridState> getBoard() {
+    public Map<Point, GridState> getBoard(List<Move> movesList) {
         Map<Point, GridState> result = new HashMap<>();
         for (int x = 0; x < boardSize; x++) {
             for (int y = 0; y < boardSize; y++) {
                 result.put(new Point(x, y), EMPTY);
             }
         }
-        for (Move m : moves) {
+        for (Move m : movesList) {
             if (m.getMoveType() == MoveType.MOVE) {
                 result.replace(new Point(m.getX(), m.getY()), m.getColor());
             }
