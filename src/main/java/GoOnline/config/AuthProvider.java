@@ -36,12 +36,6 @@ public class AuthProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Password incorrect");
         }
 
-        /*
-        if (!username.equals(userDetails.getUsername())) {
-            throw new BadCredentialsException("Password incorrect");
-        }*/
-
-
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 

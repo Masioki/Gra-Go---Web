@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import static GoOnline.domain.Game.GridState.*;
 
 @Entity
-public class Game implements  Serializable{
+public class Game implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Game implements  Serializable{
     @Column(name = "boardSize", nullable = false)
     private int boardSize;
 
-    @Column(name = "gameStatus", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private GameStatus gameStatus;
 
     private int movesCount;
@@ -97,7 +97,8 @@ public class Game implements  Serializable{
     }
 
     public boolean addPlayer(Player player) {
-        if (!players.contains(player) && players.size() < 2) {
+        if (players.contains(player)) return true;
+        if (players.size() < 2) {
             players.add(player);
             return true;
         }
