@@ -122,9 +122,3 @@ function clearGrid(x, y) {
     img.setAttribute('class', 'gameGrid');
     myTable.rows[x].cells[y].appendChild(img);
 }
-
-tableCreate();
-placePawn(3, 3, 1);
-placePawn(4, 4, 0);
-placePawn(5, 5, 0);
-clearGrid(4, 4);
