@@ -21,6 +21,7 @@ public class UserRepository {
     //zwroc null gdy nie znaleziono
     public Player getPlayer(String username) {
         Player player = null;
+        System.out.println(username);
         try (Session session = sessionFactory.openSession()) {
             /*player = session.byNaturalId(Player.class)
                     .using("username", username)

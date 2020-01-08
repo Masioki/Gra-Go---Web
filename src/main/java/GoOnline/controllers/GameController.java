@@ -46,6 +46,9 @@ public class GameController {
         }
         List<GameData> activeGames = gameService.getActiveGames();
         if (activeGames == null) activeGames = new ArrayList<>();
+        for(GameData d : activeGames){
+            System.out.println(d.getGameID() + " " + d.getUsername());
+        }
         model.addAttribute("ownGame", gameData);
         model.addAttribute("gamesList", activeGames);
         return "lobbyPage";
