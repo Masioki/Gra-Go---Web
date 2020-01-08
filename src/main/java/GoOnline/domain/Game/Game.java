@@ -4,6 +4,8 @@ import GoOnline.domain.GameCommandType;
 import GoOnline.domain.PawnColor;
 import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -15,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import static GoOnline.domain.Game.GridState.*;
 
 @Entity
-public class Game implements Serializable {
+public class Game {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +25,12 @@ public class Game implements Serializable {
 
     private String ownerUsername;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Player> players;
 
-    @Transient//TODO : jest potrzebne
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Move> moves;
 
     @Column(name = "boardSize", nullable = false)
@@ -63,7 +67,7 @@ public class Game implements Serializable {
     }
 
     //TODO uwzglednic licznik ruchu
-    private void setGameLogicBoard() {
+    private void setGameLogic() {
         if (gameLogic.getBoard().isEmpty()) {
             gameLogic.setGridStateMap(getBoard());
             Map<Point, GridState> result = new HashMap<>();
@@ -122,6 +126,7 @@ public class Game implements Serializable {
         }
         return null;
     }
+
     /*
     LOGIKA
      */
@@ -137,7 +142,7 @@ public class Game implements Serializable {
     }
 
     public synchronized List<Move> move(Move move) throws Exception {
-        setGameLogicBoard();
+        setGameLogic();
         int x = move.getX();
         int y = move.getY();
         Player player = move.getPlayer();
@@ -177,7 +182,7 @@ public class Game implements Serializable {
 
 
     public synchronized Move pass(Player player) throws Exception {
-        setGameLogicBoard();
+        setGameLogic();
         Move m = new Move();
         m.setPlayer(player);
         m.setNumber(++movesCount);
@@ -222,7 +227,7 @@ public class Game implements Serializable {
     }
 
     public synchronized void surrender(Player player) {
-        setGameLogicBoard();
+        setGameLogic();
         if (gameStatus != GameStatus.FINISHED && (players.get(0).getUsername().equals(player.getUsername()) || players.get(1).getUsername().equals(player.getUsername()))) {
             Move m = new Move();
             m.setGame(this);

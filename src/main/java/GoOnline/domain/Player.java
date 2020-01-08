@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.List;
 
 @Entity
-public class Player implements UserDetails, Serializable {
+public class Player implements UserDetails {
 
     @Id
     @Column(nullable = false)

@@ -55,8 +55,8 @@
             </h2>
             <!--TODO sprawdzicz czy działa-->
             <c:forEach items="${gamesList}" var="gameData">
-                <button class="przyciskLobby" onclick="chooseGame(this.getText())">
-                    ${gameData.gameID}
+                <button class="przyciskLobby" onclick="location.href='/game/join/${gameData.gameID}'"> <!-- onclick="chooseGame(this.getText())" -->
+                    ${gameData.username}
                 </button>
             </c:forEach>
             <!--

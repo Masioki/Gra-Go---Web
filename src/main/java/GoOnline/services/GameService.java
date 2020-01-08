@@ -32,7 +32,7 @@ public class GameService {
     public int createGame(String name) {
         Player p = userService.getPlayer(name);
         Game g = new Game(p, 19);
-        p.getGame().setGameStatus(GameStatus.INTERRUPTED);
+        if (p.getGame() != null) p.getGame().setGameStatus(GameStatus.INTERRUPTED);
         p.setGame(g);
         return gameRepository.save(g);
     }

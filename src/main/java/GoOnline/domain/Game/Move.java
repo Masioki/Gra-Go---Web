@@ -8,7 +8,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-public class Move implements Serializable {
+public class Move {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
