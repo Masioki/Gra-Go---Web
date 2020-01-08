@@ -54,7 +54,9 @@
             <button class="przyciskMenu">
                 SURRENDER
             </button>
-
+            <button class="przyciskMenu" onclick=tableCreate()>
+                CREATE BOARD
+            </button>
         </section>
     </div>
     <div class="col-sm-9">
