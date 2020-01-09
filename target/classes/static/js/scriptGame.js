@@ -4,6 +4,7 @@ var username = null;
 
 window.onload = function () {
     tableCreate();
+    connect(gameID);
     var movesJson = $('#moves');
     var moves = JSON.parse(movesJson.val());
     moves.forEach(decodeMove);
@@ -25,6 +26,7 @@ function connect(ID) {
 
 //MOVE, PASS, SURRENDER
 function sendMove(x, y, type) {
+    alert("POLECENIE WYSŁANE");
     if (stompClient != null && gameID != null) {
         stompClient.send('/game/' + gameID, {}, JSON.stringify({
             'x': x,
@@ -68,12 +70,14 @@ function decodeMove(moveList) {
 }
 
 function pass(me) {
+    alert("PASS");
     if (me) {
 
     }
 }
 
 function surrender(me) {
+    alert("SURRENDER")
     if (me) {
 
     }
@@ -84,7 +88,7 @@ function draw() {
 }
 
 function win(me) {
-
+alert("WIN");
 }
 
 function tableCreate() {
@@ -97,6 +101,7 @@ function tableCreate() {
             var img = document.createElement('img');
             img.setAttribute('src', '/Images/emptyGrid.jpg');
             img.setAttribute('class', 'gameGrid');
+            img.setAttribute('onclick', "sendMove("+ i +", "+ j +", 'MOVE')");
             //document.createTextNode('O')
             td.appendChild(img);
             tr.appendChild(td);

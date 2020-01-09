@@ -48,10 +48,10 @@
                 0
             </label>
             <br/>
-            <button class="przyciskMenu">
+            <button class="przyciskMenu" onclick=sendMove(0,0,'PASS')>
                 PAUSE
             </button>
-            <button class="przyciskMenu">
+            <button class="przyciskMenu"  onclick=sendMove(0,0,'SURRENDER')>
                 SURRENDER
             </button>
         </section>
