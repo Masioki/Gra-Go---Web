@@ -2,11 +2,12 @@ var stompClient = null;
 var gameID = null;
 var username = null;
 
-$(document).ready(function () {
+window.onload = function () {
+    tableCreate();
     var movesJson = $('#moves');
     var moves = JSON.parse(movesJson.val());
     moves.forEach(decodeMove);
-});
+};
 
 function connect(ID) {
     gameID = ID;
@@ -94,7 +95,7 @@ function tableCreate() {
         for (var j = 0; j < 19; j++) {
             var td = document.createElement('td');
             var img = document.createElement('img');
-            img.setAttribute('src', '../Images/emptyGrid.jpg');
+            img.setAttribute('src', '/Images/emptyGrid.jpg');
             img.setAttribute('class', 'gameGrid');
             //document.createTextNode('O')
             td.appendChild(img);
@@ -110,10 +111,10 @@ function placePawn(x, y, white) {
     myTable.rows[x].cells[y].innerHTML = '';
     var img = document.createElement('img');
     if (white) {
-        img.setAttribute('src', '../Images/gridWhitePawn.jpg');
+        img.setAttribute('src', '/Images/gridWhitePawn.jpg');
         img.setAttribute('class', 'gameGrid');
     } else {
-        img.setAttribute('src', '../Images/gridBlackPawn.jpg');
+        img.setAttribute('src', '/Images/gridBlackPawn.jpg');
         img.setAttribute('class', 'gameGrid');
     }
     myTable.rows[x].cells[y].appendChild(img);
@@ -123,7 +124,7 @@ function clearGrid(x, y) {
     var myTable = document.getElementById('gameBoard');
     myTable.rows[x].cells[y].innerHTML = '';
     var img = document.createElement('img');
-    img.setAttribute('src', '../Images/emptyGrid.jpg');
+    img.setAttribute('src', '/Images/emptyGrid.jpg');
     img.setAttribute('class', 'gameGrid');
     myTable.rows[x].cells[y].appendChild(img);
 }

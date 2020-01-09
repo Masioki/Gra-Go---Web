@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!--dolaczamy plik css z opisem graficznym strony-->
-    <link href="/css/basicStyleSheet.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/css/basicStyleSheet.css" rel="stylesheet" type="text/css"/>
     <title>Lobby</title>
 </head>
 <body>
@@ -80,7 +80,7 @@
     </div>
 </div>
 <!--dolaczam java script-->
-<script src="/js/scriptLobby.js"></script>
+<script src="${pageContext.request.contextPath}/js/scriptLobby.js"></script>
 <!--bootstrap js-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
