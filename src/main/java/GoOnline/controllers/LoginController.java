@@ -3,6 +3,7 @@ package GoOnline.controllers;
 import GoOnline.services.UserService;
 import GoOnline.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-public class LoginController {
+public class LoginController implements ErrorController {
 
     @Autowired
     private UserService service;
@@ -48,4 +49,8 @@ public class LoginController {
         return "redirect:/login";
     }
 
+    @Override
+    public String getErrorPath() {
+        return "redirect:/login";
+    }
 }

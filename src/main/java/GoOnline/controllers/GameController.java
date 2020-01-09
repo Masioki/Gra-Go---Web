@@ -61,6 +61,7 @@ public class GameController {
             redirectAttributes.addAttribute("gameInProgress");
             return "lobbyPage";
         }
+        model.addAttribute("gameID", gameID);
         model.addAttribute("gameData", gameService.getGameData(gameID));
         model.addAttribute("moves", gson.toJson(gameService.getGameMoves(gameID)));
         return "gamePage";
