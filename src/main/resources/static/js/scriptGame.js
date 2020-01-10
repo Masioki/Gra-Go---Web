@@ -35,8 +35,10 @@ function sendMove(x, y, type) {
 }
 
 function decodeMove(moveList) {
+    alert(moveList.length);
     for (var i = 0; i < moveList.length; i++) {
         var move = moveList[i];
+        alert(move.commandType);
         switch (move.commandType) {
             case 'MOVE': {
                 if (move.color.localeCompare( "WHITE")) placePawn(move.x, move.y, true);
