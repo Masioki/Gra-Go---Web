@@ -22,30 +22,31 @@
             <h2>
                 TOOLS
             </h2>
-            <button class="przyciskMenu">
+            <button class="przyciskMenu" onclick="location.href='/game/lobby'">
                 RETURN
             </button>
             <br/>
-            <label>
+            <label class="specialLabel">
                 PLAYER:
             </label>
             <br/>
-            <label>
+            <label class="specialLabel" id="labelPlayerName">
                 nickname...
             </label>
             <br/>
-            <label>
+            <label class="specialLabel">
                 POINTS:
             </label>
-            <label>
+            <br/>
+            <label id="labelPlayerScore">
                 0
             </label>
             <br>
-            <label>
+            <label class="labelSpecialLabel">
                 ENEMY POINTS
             </label>
             <br>
-            <label>
+            <label id="labelEnemyScore">
                 0
             </label>
             <br/>

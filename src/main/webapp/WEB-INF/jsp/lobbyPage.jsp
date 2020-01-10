@@ -30,14 +30,6 @@
                 CREATE GAME
             </button>
             <br/>
-            <label>
-                WYBRANA GRA:
-            </label>
-            <br/>
-            <label id="labelChosenGame" onclick="startGame()">
-                0
-            </label>
-            <br/>
             <button class="przyciskMenu">
                 JOIN GAME
             </button>

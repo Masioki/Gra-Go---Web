@@ -138,3 +138,23 @@ function clearGrid(x, y) {
     img.setAttribute('class', 'gameGrid');
     myTable.rows[x].cells[y].appendChild(img);
 }
+//TODO - funkcja ustawiająca wynik
+function setScore( score, me)
+{
+    /*jeśli prawda ustawiamy punkty gracza w przeciwnym razie jego przeciwnika*/
+    if(me)
+    {
+        var label = document.getElementById("labelPlayerScore");
+        label.innerText = score;
+    }
+    else
+    {
+        var label = document.getElementById("labelEnemyScore");
+        label.innerText = score;
+    }
+}
+
+function setPlayerName( name ) {
+    var label = document.getElementById("labelPlayerName");
+    label.innerText = score;
+}
