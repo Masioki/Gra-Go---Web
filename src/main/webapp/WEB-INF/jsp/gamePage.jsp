@@ -14,6 +14,7 @@
 <br/>
 
 <input type="hidden" id="moves" value="${moves}">
+<input type="hidden" id="ID" value="${gameID}">
 
 <div class="row">
     <div class="col-sm-3">
@@ -67,7 +68,8 @@
         </section>
     </div>
 </div>
-
+<script src="${pageContext.request.contextPath}/js/stomp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <!--dolaczam java script-->
 <script src="${pageContext.request.contextPath}/js/scriptGame.js"></script>
 <!--bootstrap js-->

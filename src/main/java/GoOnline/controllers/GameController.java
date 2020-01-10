@@ -46,9 +46,6 @@ public class GameController {
         }
         List<GameData> activeGames = gameService.getActiveGames();
         if (activeGames == null) activeGames = new ArrayList<>();
-        for (GameData d : activeGames) {
-            System.out.println(d.getGameID() + " " + d.getUsername());
-        }
         model.addAttribute("ownGame", gameData);
         model.addAttribute("gamesList", activeGames);
         return "lobbyPage";
@@ -75,11 +72,13 @@ public class GameController {
     }
 
 
-    @MessageMapping("/game/{gameID}")
-    @SendTo("/topic/game/{gameID}")
+    @MessageMapping("/stomp/{gameID}")
+    @SendTo("/topic/stomp/{gameID}")
     public String sendMessage(@DestinationVariable("gameID") int gameID, @Payload String message, Principal principal) {
         MoveDTO move = gson.fromJson(message, MoveDTO.class);
+        System.out.println(move.getCommandType() + " " + move.getX() + " " + move.getUsername());
         try {
+            move.setUsername(principal.getName());
             if (move != null) return gson.toJson(gameService.move(gameID, principal.getName(), move));
         } catch (Exception e) {
             return "ERROR";

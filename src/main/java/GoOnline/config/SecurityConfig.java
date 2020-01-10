@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/game").hasRole("USER").anyRequest().authenticated()
+                .antMatchers("/stomp/**", "/stompEndpoint","/stomp").permitAll()
                 .and()
                 .formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/game/lobby")
                 .and()

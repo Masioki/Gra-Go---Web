@@ -1,34 +1,39 @@
+
 var stompClient = null;
 var gameID = null;
 var username = null;
 
 window.onload = function () {
     tableCreate();
-    connect(gameID);
+    gameID = $('#ID').val();
     var movesJson = $('#moves');
     var moves = JSON.parse(movesJson.val());
     moves.forEach(decodeMove);
+    connect(gameID);
 };
 
 function connect(ID) {
     gameID = ID;
-    var socket = new SockJS('/game/stompEndpoint');
+    alert("laczy");
+    var socket = new SockJS('/gameStompEndpoint');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/topic/game/' + gameID, function (message) {
-            var move = JSON.parse(message);
+        alert("polaczono");
+        stompClient.subscribe('/topic/stomp/' + gameID, function (message) {
             if (message !== 'ERROR') {
+                var move = JSON.parse(message);
                 decodeMove(move);
-            }
+            }alert("err");
         });
     });
 }
 
 //MOVE, PASS, SURRENDER
 function sendMove(x, y, type) {
-    alert("POLECENIE WYSŁANE");
+    alert("wysylanie" + stompClient + gameID);
     if (stompClient != null && gameID != null) {
-        stompClient.send('/game/' + gameID, {}, JSON.stringify({
+        alert("POLECENIE WYSŁANE" + gameID);
+        stompClient.send('/stomp/' + gameID, {}, JSON.stringify({
             'x': x,
             'y': y,
             'commandType': type,
@@ -77,7 +82,7 @@ function pass(me) {
 }
 
 function surrender(me) {
-    alert("SURRENDER")
+    alert("SURRENDER");
     if (me) {
 
     }
@@ -88,7 +93,7 @@ function draw() {
 }
 
 function win(me) {
-alert("WIN");
+    alert("WIN");
 }
 
 function tableCreate() {
@@ -101,7 +106,7 @@ function tableCreate() {
             var img = document.createElement('img');
             img.setAttribute('src', '/Images/emptyGrid.jpg');
             img.setAttribute('class', 'gameGrid');
-            img.setAttribute('onclick', "sendMove("+ i +", "+ j +", 'MOVE')");
+            img.setAttribute('onclick', "sendMove(" + i + ", " + j + ", 'MOVE')");
             //document.createTextNode('O')
             td.appendChild(img);
             tr.appendChild(td);

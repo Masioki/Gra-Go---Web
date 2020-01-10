@@ -34,11 +34,8 @@ public class UserService implements UserDetailsService {
     }
 
     public void registerUser(LoginData loginData) throws AccountException {
-        System.out.println("weszlo");
         UserDetails p = loadUserByUsername(loginData.getUsername());
-        System.out.println("przeszlo");
         if (p != null) throw new AccountException();
-        System.out.println("tworzy obiekt");
         Player player = new Player();
         player.setUsername(loginData.getUsername());
         player.setPassword(passwordEncoder.encode(loginData.getPassword()));
