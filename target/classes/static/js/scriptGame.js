@@ -1,4 +1,3 @@
-
 var stompClient = null;
 var gameID = null;
 var username = null;
@@ -14,25 +13,18 @@ window.onload = function () {
 
 function connect(ID) {
     gameID = ID;
-    alert("laczy");
     var socket = new SockJS('/gameStompEndpoint');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        alert("polaczono");
-        stompClient.subscribe('/topic/stomp/' + gameID, function (message) {
-            if (message !== 'ERROR') {
-                var move = JSON.parse(message);
-                decodeMove(move);
-            }alert("err");
+        stompClient.subscribe('/topic/stomp/' + gameID, function (move) {
+            if (move.body !== "ERROR") decodeMove(JSON.parse(move.body));
         });
     });
 }
 
 //MOVE, PASS, SURRENDER
 function sendMove(x, y, type) {
-    alert("wysylanie" + stompClient + gameID);
     if (stompClient != null && gameID != null) {
-        alert("POLECENIE WYSŁANE" + gameID);
         stompClient.send('/stomp/' + gameID, {}, JSON.stringify({
             'x': x,
             'y': y,
@@ -47,8 +39,8 @@ function decodeMove(moveList) {
         var move = moveList[i];
         switch (move.commandType) {
             case 'MOVE': {
-                if (move.color === 'WHITE') placePawn(move.x, move.y, true);
-                else if (move.color === 'BLACK') placePawn(move.x, move.y, false);
+                if (move.color.localeCompare( "WHITE")) placePawn(move.x, move.y, true);
+                else if (move.color.localeCompare( "BLACK")) placePawn(move.x, move.y, false);
                 else clearGrid(move.x, move.y);
                 break;
             }
@@ -120,7 +112,7 @@ function placePawn(x, y, white) {
     var myTable = document.getElementById('gameBoard');
     myTable.rows[x].cells[y].innerHTML = '';
     var img = document.createElement('img');
-    if (white) {
+    if (white === true) {
         img.setAttribute('src', '/Images/gridWhitePawn.jpg');
         img.setAttribute('class', 'gameGrid');
     } else {
@@ -137,4 +129,21 @@ function clearGrid(x, y) {
     img.setAttribute('src', '/Images/emptyGrid.jpg');
     img.setAttribute('class', 'gameGrid');
     myTable.rows[x].cells[y].appendChild(img);
+}
+
+//TODO - funkcja ustawiająca wynik
+function setScore(score, me) {
+    /*jeśli prawda ustawiamy punkty gracza w przeciwnym razie jego przeciwnika*/
+    if (me) {
+        var label = document.getElementById("labelPlayerScore");
+        label.innerText = score;
+    } else {
+        var label = document.getElementById("labelEnemyScore");
+        label.innerText = score;
+    }
+}
+
+function setPlayerName(name) {
+    var label = document.getElementById("labelPlayerName");
+    label.innerText = score;
 }

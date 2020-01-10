@@ -59,22 +59,32 @@ public class Game {
         gameLogic = new GameLogic(boardSize);
         pass = false;
         gameStatus = GameStatus.WAITING;
-        lastMoved = "bot";
+        movesCount = 0;
         moves = new LinkedList<>();
     }
 
     private void setGameLogic() {
-        moves.stream().filter(m -> m.getNumber() == movesCount).findFirst().ifPresent(move -> {
+        moves.stream().filter(m -> m.getNumber() == movesCount).findAny().ifPresent(move -> {
             lastMoved = move.getPlayer().getUsername();
             pass = move.getMoveType().equals(MoveType.PASS);
         });
-        if (gameLogic.getBoard().isEmpty()) {
-            moves.sort(Comparator.comparingInt(Move::getNumber));
-            gameLogic.setGridStateMap(getBoard(moves));
-            List<Move> previousMoves = new ArrayList<>(moves);
-            previousMoves.remove(previousMoves.size() - 1);
-            gameLogic.setPreviousGridStateMap(getBoard(previousMoves));
+        /*
+        for(Move m : moves){
+            if(m.getNumber() == movesCount){
+                lastMoved = m.getPlayer().getUsername();
+                pass = m.getMoveType().equals(MoveType.PASS);
+                break;
+            }
         }
+        System.out.println(lastMoved);
+*/
+        gameLogic = new GameLogic(boardSize);
+        moves.sort(Comparator.comparingInt(Move::getNumber));
+        gameLogic.setGridStateMap(getBoard(moves));
+        List<Move> previousMoves = new ArrayList<>(moves);
+        if (previousMoves.size() != 0) previousMoves.remove(previousMoves.size() - 1);
+        gameLogic.setPreviousGridStateMap(getBoard(previousMoves));
+
     }
 
     public Map<Point, GridState> getBoard(List<Move> movesList) {
@@ -85,7 +95,7 @@ public class Game {
             }
         }
         for (Move m : movesList) {
-            if (m.getMoveType() == MoveType.MOVE) {
+            if (m.getMoveType() == MoveType.MOVE || m.getMoveType() == MoveType.MOVE_AUTO) {
                 result.replace(new Point(m.getX(), m.getY()), m.getColor());
             }
         }
@@ -124,12 +134,6 @@ public class Game {
      */
 
     public boolean isPlayerTurn(Player player) {
-        //System.out.println(player.getUsername() + " " + lastMoved);
-        try {
-            TimeUnit.MILLISECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return !player.getUsername().equals(lastMoved);
     }
 
@@ -139,30 +143,36 @@ public class Game {
         int y = move.getY();
         Player player = move.getPlayer();
         List<Move> resultMoves = new ArrayList<>();
-        Map<Point, GridState> previous = new HashMap<>(gameLogic.getBoard());
+        Map<Point, GridState> previous = gameLogic.getBoard();
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player) && gameLogic.placePawn(x, y, player.getUsername().equals(ownerUsername))) {
             GridState color;
+
             if (player.getUsername().equals(ownerUsername)) color = WHITE;
             else color = BLACK;
             move.setNumber(++movesCount);
             move.setColor(color);
             move.setGame(this);
             move.setMoveType(MoveType.MOVE);
+            move.setPlayer(player);
             resultMoves.add(move);
+
             Map<Point, GridState> after = gameLogic.getBoard();
             Map<Point, GridState> changes = new HashMap<>();
             for (Point point : after.keySet()) {
                 if (previous.get(point) != after.get(point)) changes.put(point, after.get(point));
             }
             for (Point p : changes.keySet()) {
-                Move m = new Move();
-                m.setX((int) p.getX());
-                m.setY((int) p.getY());
-                move.setNumber(++movesCount);
-                move.setColor(EMPTY);
-                move.setGame(this);
-                move.setMoveType(MoveType.MOVE);
-                resultMoves.add(m);
+                if (x != p.getX() || y != p.getY()) {
+                    Move m = new Move();
+                    m.setX((int) p.getX());
+                    m.setY((int) p.getY());
+                    m.setNumber(++movesCount);
+                    m.setColor(changes.get(p));
+                    m.setGame(this);
+                    m.setMoveType(MoveType.MOVE_AUTO);
+                    m.setPlayer(player);
+                    resultMoves.add(m);
+                }
             }
             lastMoved = player.getUsername();
             pass = false;

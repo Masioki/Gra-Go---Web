@@ -4,6 +4,7 @@ package GoOnline.domain;
 import GoOnline.domain.Game.Game;
 import GoOnline.domain.Game.GridState;
 import GoOnline.domain.Game.Move;
+import GoOnline.domain.Game.MoveType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,32 +29,34 @@ public class Player implements UserDetails {
     private Game game;
 
 
-    public List<Move> move(int x, int y, Game game) throws Exception {
+    public List<Move> move(int x, int y) throws Exception {
         if (game == null) return new ArrayList<>();
         Move m = new Move();
         m.setX(x);
         m.setY(y);
         m.setPlayer(this);
+        m.setMoveType(MoveType.MOVE);
+        m.setGame(game);
         return game.move(m);
     }
 
-    public Move pass(Game game) throws Exception {
+    public Move pass() throws Exception {
         if (game == null) throw new Exception("no available game");
         return game.pass(this);
     }
 
-    public void surrender(Game game) {
+    public void surrender() {
         if (game != null)
             game.surrender(this);
     }
 
-    public Point getScore(Game game) {
+    public Point getScore() {
         int own = game.getOwnScore(username);
         int opponent = game.getOpponentScore(username);
         return new Point(own, opponent);
     }
 
-    public Map<Point, GridState> getCurrentGameBoard(Game game) {
+    public Map<Point, GridState> getCurrentGameBoard() {
         if (game == null) return new HashMap<>();
         return null;//return game.getBoard();
     }

@@ -5,5 +5,6 @@ public enum MoveType {
     MOVE,
     SURRENDER,
     DRAW,
-    WIN
+    WIN,
+    MOVE_AUTO
 }

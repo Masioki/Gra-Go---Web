@@ -81,22 +81,26 @@ public class GameService {
         return result;
     }
 
-    public List<MoveDTO> move(int gameID, String username, MoveDTO move) throws Exception {
-        Game g = gameRepository.getGame(gameID);
+    public List<MoveDTO> move(String username, MoveDTO move) throws Exception {
         Player p = userService.getPlayer(username);
-        if (g == null || p == null) return new ArrayList<>();
+        if (p == null) return new ArrayList<>();
         switch (move.getCommandType()) {
             case "MOVE" -> {
-                List<Move> moveList = p.move(move.getX(), move.getY(), g);
+                List<Move> moveList = p.move(move.getX(), move.getY());
                 List<MoveDTO> result = new ArrayList<>();
                 for (Move m : moveList) result.add(m.getDTO());
+                gameRepository.save(p.getGame());
                 return result;
             }
             case "PASS" -> {
-                Move res = p.pass(g);
+                Move res = p.pass();
+                gameRepository.save(p.getGame());
                 return Collections.singletonList(res.getDTO());
             }
-            case "SURRENDER" -> p.surrender(g);
+            case "SURRENDER" -> {
+                p.surrender();
+                gameRepository.save(p.getGame());
+            }
         }
         return new ArrayList<>();
     }

@@ -76,11 +76,13 @@ public class GameController {
     @SendTo("/topic/stomp/{gameID}")
     public String sendMessage(@DestinationVariable("gameID") int gameID, @Payload String message, Principal principal) {
         MoveDTO move = gson.fromJson(message, MoveDTO.class);
-        System.out.println(move.getCommandType() + " " + move.getX() + " " + move.getUsername());
         try {
-            move.setUsername(principal.getName());
-            if (move != null) return gson.toJson(gameService.move(gameID, principal.getName(), move));
+            if (move != null) {
+                move.setUsername(principal.getName());
+                return gson.toJson(gameService.move(principal.getName(), move));
+            }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "ERROR";
         }
         return "ERROR";

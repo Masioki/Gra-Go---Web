@@ -62,7 +62,7 @@ public class Bot extends Player {
         int y = (int) Math.round(bestPoint.getY());
 
         try {
-            move(x, y, game);
+            move(x, y);
         } catch (Exception e) {
             moveToRandom();
         }
@@ -110,7 +110,7 @@ public class Bot extends Player {
         while (emptyPlaceList.size() != 0) {
             int index = (int) (Math.random() * (emptyPlaceList.size() - 1));
             try {
-                List<Move> m = move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY(), game);
+                List<Move> m = move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY());
                 done = true;
                 break;
             } catch (Exception e) {
@@ -119,7 +119,7 @@ public class Bot extends Player {
 
         }
         if (!done) try {
-            pass(game);
+            pass();
         } catch (Exception e) {
             e.printStackTrace();
         }
