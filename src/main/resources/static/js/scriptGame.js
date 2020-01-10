@@ -64,6 +64,10 @@ function decodeMove(moveList) {
                 draw();
                 break;
             }
+            case 'MOVE_AUTO':{
+                clearGrid(move.x, move.y);
+                break;
+            }
         }
     }
 }
