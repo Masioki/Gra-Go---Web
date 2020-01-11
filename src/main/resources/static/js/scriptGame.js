@@ -41,8 +41,8 @@ function decodeMove(moveList) {
         alert(move.commandType);
         switch (move.commandType) {
             case 'MOVE': {
-                if (move.color.localeCompare( "WHITE")) placePawn(move.x, move.y, true);
-                else if (move.color.localeCompare( "BLACK")) placePawn(move.x, move.y, false);
+                if (move.color.localeCompare("WHITE")) placePawn(move.x, move.y, true);
+                else if (move.color.localeCompare("BLACK")) placePawn(move.x, move.y, false);
                 else clearGrid(move.x, move.y);
                 break;
             }
@@ -59,17 +59,19 @@ function decodeMove(moveList) {
             case 'WIN' : {
                 if (move.username === username) win(true);
                 else win(false);
+                break;
             }
             case 'DRAW': {
                 draw();
                 break;
             }
-            case 'MOVE_AUTO':{
+            case 'MOVE_AUTO': {
                 clearGrid(move.x, move.y);
                 break;
             }
         }
     }
+    refreshScore();
 }
 
 function pass(me) {
@@ -135,6 +137,17 @@ function clearGrid(x, y) {
     img.setAttribute('src', '/Images/emptyGrid.jpg');
     img.setAttribute('class', 'gameGrid');
     myTable.rows[x].cells[y].appendChild(img);
+}
+//TODO: poprawic
+function refreshScore() {
+    $.get({
+        url: "/game/score",
+        success: [function (data) {
+            const parsed = JSON.parse(data);
+            setScore(parsed.own, true);
+            setScore(parsed.opponent, false);
+        }]
+    });
 }
 
 //TODO - funkcja ustawiająca wynik

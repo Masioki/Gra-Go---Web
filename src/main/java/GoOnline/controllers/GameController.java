@@ -3,10 +3,12 @@ package GoOnline.controllers;
 import GoOnline.domain.Game.Game;
 import GoOnline.dto.GameData;
 import GoOnline.dto.MoveDTO;
+import GoOnline.dto.ScoreDTO;
 import GoOnline.services.GameService;
 import GoOnline.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -71,6 +73,13 @@ public class GameController {
         return "redirect:/game/join/" + gameID;
     }
 
+
+    @GetMapping("/game/score")
+    public ResponseEntity<String> getScore(Authentication authentication) {
+        ScoreDTO score = gameService.getScore(authentication.getName());
+        if (score == null) return ResponseEntity.status(500).build();
+        return ResponseEntity.ok(gson.toJson(score));
+    }
 
     @MessageMapping("/stomp/{gameID}")
     @SendTo("/topic/stomp/{gameID}")

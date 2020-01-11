@@ -6,10 +6,12 @@ import GoOnline.domain.Game.Move;
 import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
 import GoOnline.dto.MoveDTO;
+import GoOnline.dto.ScoreDTO;
 import GoOnline.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -103,6 +105,18 @@ public class GameService {
             }
         }
         return new ArrayList<>();
+    }
+
+    public ScoreDTO getScore(String username){
+        Player p = userService.getPlayer(username);
+        if(p!=null){
+            ScoreDTO s = new ScoreDTO();
+            Point point = p.getScore();
+            s.setOwn((int)point.getX());
+            s.setOpponent((int)point.getY());
+            return s;
+        }
+        return null;
     }
 
     public boolean isWhite(int gameID, String username) {
