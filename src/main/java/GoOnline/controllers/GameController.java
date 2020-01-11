@@ -101,6 +101,7 @@ public class GameController {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
             return "ERROR";
         }
         return "ERROR";

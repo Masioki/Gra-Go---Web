@@ -190,6 +190,7 @@ public class Game {
         m.setPlayer(player);
         m.setNumber(++movesCount);
         m.setGame(this);
+        m.setColor(player.getUsername().equals(ownerUsername) ? WHITE : BLACK);
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player)) {
             if (pass) {
                 int white = getOwnScore(ownerUsername);

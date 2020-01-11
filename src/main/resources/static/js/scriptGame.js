@@ -54,17 +54,17 @@ function decodeMove(moveList) {
                 break;
             }
             case 'PASS': {
-                if (move.username === username) pass(true);
+                if (move.username.localeCompare(username)) pass(true);
                 else pass(false);
                 break;
             }
             case 'SURRENDER': {
-                if (move.username === username) surrender(true);
+                if (move.username.localeCompare(username)) surrender(true);
                 else surrender(false);
                 break;
             }
             case 'WIN' : {
-                if (move.username === username) win(true);
+                if (move.username.localeCompare(username)) win(true);
                 else win(false);
                 break;
             }
@@ -156,7 +156,6 @@ function refreshScore() {
         url: "/game/score",
         dataType: 'json',
         success: [function (data) {
-            alert(data.own);
             setScore(data.own, true);
             setScore(data.opponent, false);
         }]

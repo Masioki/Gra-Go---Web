@@ -54,17 +54,17 @@ function decodeMove(moveList) {
                 break;
             }
             case 'PASS': {
-                if (move.username === username) pass(true);
+                if (move.username.localeCompare(username)) pass(true);
                 else pass(false);
                 break;
             }
             case 'SURRENDER': {
-                if (move.username === username) surrender(true);
+                if (move.username.localeCompare(username)) surrender(true);
                 else surrender(false);
                 break;
             }
             case 'WIN' : {
-                if (move.username === username) win(true);
+                if (move.username.localeCompare(username)) win(true);
                 else win(false);
                 break;
             }
@@ -82,25 +82,30 @@ function decodeMove(moveList) {
 }
 
 function pass(me) {
-    alert("PASS");
     if (me) {
-
+        alert("PASS");
+    }
+    else
+    {
+        alert("Opponent passed")
     }
 }
 
 function surrender(me) {
-    alert("SURRENDER");
     if (me) {
-
+        alert("You lost. Sadly ... :(")
     }
 }
 
 function draw() {
-
+    alert("Its draw.... :/")
 }
 
 function win(me) {
-    alert("WIN");
+    if(me)
+    {
+        alert("You Won :)");
+    }
 }
 
 function tableCreate() {
@@ -146,21 +151,17 @@ function clearGrid(x, y) {
     myTable.rows[x].cells[y].appendChild(img);
 }
 
-//TODO: poprawic
 function refreshScore() {
     $.get({
         url: "/game/score",
         dataType: 'json',
         success: [function (data) {
-            //const parsed = JSON.parse(data);
-            alert(data.own);
             setScore(data.own, true);
             setScore(data.opponent, false);
         }]
     });
 }
 
-//TODO - funkcja ustawiająca wynik
 function setScore(score, me) {
     /*jeśli prawda ustawiamy punkty gracza w przeciwnym razie jego przeciwnika*/
     if (me) {
