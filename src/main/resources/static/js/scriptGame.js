@@ -82,25 +82,30 @@ function decodeMove(moveList) {
 }
 
 function pass(me) {
-    alert("PASS");
     if (me) {
-
+        alert("PASS");
+    }
+    else
+    {
+        alert("Opponent passed")
     }
 }
 
 function surrender(me) {
-    alert("SURRENDER");
     if (me) {
-
+        alert("You lost. Sadly ... :(")
     }
 }
 
 function draw() {
-
+    alert("Its draw.... :/")
 }
 
 function win(me) {
-    alert("WIN");
+    if(me)
+    {
+        alert("You Won :)");
+    }
 }
 
 function tableCreate() {

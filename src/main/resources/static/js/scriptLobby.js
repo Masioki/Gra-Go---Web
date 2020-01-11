@@ -12,3 +12,8 @@ function startGame() {
 function joinGame(gameID) {
     window.location.replace('/game/join/' + gameID);
 }
+function playWithCp() {
+    //TODO - wywołanie bota
+    window.location.replace('/game/create');
+}
+

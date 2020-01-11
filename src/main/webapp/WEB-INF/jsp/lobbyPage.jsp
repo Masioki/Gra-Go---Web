@@ -30,11 +30,7 @@
                 CREATE GAME
             </button>
             <br/>
-            <button class="przyciskMenu">
-                JOIN GAME
-            </button>
-            <br/>
-            <button class="przyciskMenu">
+            <button class="przyciskMenu" onclick="playWithCp()">
                 PLAY AGAINST CP
             </button>
             <br/>
@@ -45,29 +41,11 @@
             <h2>
                 LOBBY LIST
             </h2>
-            <!--TODO sprawdzicz czy działa-->
             <c:forEach items="${gamesList}" var="gameData">
                 <button class="przyciskLobby" onclick="location.href='/game/join/${gameData.gameID}'"> <!-- onclick="chooseGame(this.getText())" -->
                     ${gameData.username}
                 </button>
             </c:forEach>
-            <!--
-            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
-                GAME IS DEAD...
-            </button>
-            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
-                GAME IS DEAD...
-            </button>
-            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
-                GAME IS DEAD...
-            </button>
-            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
-                GAME IS DEAD...
-            </button>
-            <button class="przyciskLobby" onclick="chooseGame(this.getText())">
-                GAME IS DEAD...
-            </button>
-            -->
         </section>
     </div>
 </div>
