@@ -45,9 +45,9 @@ public class Player implements UserDetails {
         return game.pass(this);
     }
 
-    public void surrender() {
-        if (game != null)
-            game.surrender(this);
+    public Move surrender() throws Exception{
+        if (game == null) throw new Exception("no available game");
+        return game.surrender(this);
     }
 
     public Point getScore() {

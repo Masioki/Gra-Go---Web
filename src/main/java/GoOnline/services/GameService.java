@@ -102,8 +102,9 @@ public class GameService {
                 return Collections.singletonList(res.getDTO());
             }
             case "SURRENDER" -> {
-                p.surrender();
+                Move res = p.surrender();
                 gameRepository.save(p.getGame());
+                return Collections.singletonList(res.getDTO());
             }
         }
         return new ArrayList<>();

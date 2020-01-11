@@ -230,17 +230,23 @@ public class Game {
         throw new Exception("wrong move");
     }
 
-    public synchronized void surrender(Player player) {
+    public synchronized Move surrender(Player player) throws Exception {
         setGameLogic();
-        if (gameStatus != GameStatus.FINISHED && (players.get(0).getUsername().equals(player.getUsername()) || players.get(1).getUsername().equals(player.getUsername()))) {
+        if (gameStatus != GameStatus.FINISHED && players.contains(player)) {
             Move m = new Move();
             m.setGame(this);
-            m.setMoveType(MoveType.SURRENDER);
-            m.setPlayer(player);
+            m.setMoveType(MoveType.WIN);
+            Player winner = player.getUsername().equals(players.get(0).getUsername()) ? players.get(0) : players.get(1);
+            m.setPlayer(winner);
+            m.setColor(winner.getUsername().equals(ownerUsername) ? WHITE : BLACK);
             m.setNumber(++movesCount);
+            m.setY(0);
+            m.setY(0);
             moves.add(m);
             gameStatus = GameStatus.FINISHED;
+            return m;
         }
+        throw new Exception("wrong move");
     }
 
     /* Getters Setters */

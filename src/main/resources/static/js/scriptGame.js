@@ -84,16 +84,16 @@ function decodeMove(moveList) {
 function pass(me) {
     if (me) {
         alert("PASS");
-    }
-    else
-    {
+    } else {
         alert("Opponent passed")
     }
 }
 
 function surrender(me) {
-    if (me) {
+    if (me === true) {
         alert("You lost. Sadly ... :(")
+    } else {
+        alert("You won !");
     }
 }
 
@@ -102,9 +102,10 @@ function draw() {
 }
 
 function win(me) {
-    if(me)
-    {
+    if (me === true) {
         alert("You Won :)");
+    } else {
+        alert("You lost :/");
     }
 }
 
