@@ -5,11 +5,20 @@ var username = null;
 window.onload = function () {
     tableCreate();
     gameID = $('#ID').val();
-    var movesJson = $('#moves');
-    var moves = JSON.parse(movesJson.val());
-    moves.forEach(decodeMove);
+    getMoves(gameID);
     connect(gameID);
 };
+
+
+function getMoves(ID) {
+    $.get({
+        url: '/game/moves/' + gameID,
+        dataType: "json",
+        success: [function (data) {
+            decodeMove(data);
+        }]
+    })
+}
 
 function connect(ID) {
     gameID = ID;
@@ -35,10 +44,8 @@ function sendMove(x, y, type) {
 }
 
 function decodeMove(moveList) {
-    alert(moveList.length);
     for (var i = 0; i < moveList.length; i++) {
         var move = moveList[i];
-        alert(move.commandType);
         switch (move.commandType) {
             case 'MOVE': {
                 if (move.color.localeCompare("WHITE")) placePawn(move.x, move.y, true);
@@ -138,19 +145,19 @@ function clearGrid(x, y) {
     img.setAttribute('class', 'gameGrid');
     myTable.rows[x].cells[y].appendChild(img);
 }
-//TODO: poprawic
+
 function refreshScore() {
     $.get({
         url: "/game/score",
+        dataType: 'json',
         success: [function (data) {
-            const parsed = JSON.parse(data);
-            setScore(parsed.own, true);
-            setScore(parsed.opponent, false);
+            alert(data.own);
+            setScore(data.own, true);
+            setScore(data.opponent, false);
         }]
     });
 }
 
-//TODO - funkcja ustawiająca wynik
 function setScore(score, me) {
     /*jeśli prawda ustawiamy punkty gracza w przeciwnym razie jego przeciwnika*/
     if (me) {

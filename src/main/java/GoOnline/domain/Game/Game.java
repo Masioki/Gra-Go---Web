@@ -113,7 +113,8 @@ public class Game {
     }
 
     public int getOwnScore(String username) {
-        if (username.equals(ownerUsername)) return gameLogic.getFinalScore(true);
+        setGameLogic();
+        if (ownerUsername.equals(username)) return gameLogic.getFinalScore(true);
         return gameLogic.getFinalScore(false);
     }
 

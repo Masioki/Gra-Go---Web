@@ -13,7 +13,6 @@
 <header>GAME</header>
 <br/>
 
-<input type="hidden" id="moves" value="${moves}">
 <input type="hidden" id="ID" value="${gameID}">
 
 <div class="row">
@@ -74,8 +73,9 @@
 <!--dolaczam java script-->
 <script src="${pageContext.request.contextPath}/js/scriptGame.js"></script>
 <!--bootstrap js-->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+<script
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"

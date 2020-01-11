@@ -1,6 +1,7 @@
 package GoOnline.controllers;
 
 import GoOnline.domain.Game.Game;
+import GoOnline.domain.Game.Move;
 import GoOnline.dto.GameData;
 import GoOnline.dto.MoveDTO;
 import GoOnline.dto.ScoreDTO;
@@ -8,6 +9,7 @@ import GoOnline.services.GameService;
 import GoOnline.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -62,8 +65,14 @@ public class GameController {
         }
         model.addAttribute("gameID", gameID);
         model.addAttribute("gameData", gameService.getGameData(gameID));
-        model.addAttribute("moves", gson.toJson(gameService.getGameMoves(gameID)));
+        // model.addAttribute("moves",gameService.getGameMoves(gameID));
         return "gamePage";
+    }
+
+    @GetMapping("/game/moves/{gameID}")
+    public @ResponseBody
+    List<MoveDTO> getMoves(@PathVariable("gameID") int gameID) {
+        return gameService.getGameMoves(gameID);
     }
 
 
@@ -74,11 +83,11 @@ public class GameController {
     }
 
 
-    @GetMapping("/game/score")
-    public ResponseEntity<String> getScore(Authentication authentication) {
+    @GetMapping(value = "/game/score", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ScoreDTO> getScore(Authentication authentication) {
         ScoreDTO score = gameService.getScore(authentication.getName());
         if (score == null) return ResponseEntity.status(500).build();
-        return ResponseEntity.ok(gson.toJson(score));
+        return ResponseEntity.ok(score);
     }
 
     @MessageMapping("/stomp/{gameID}")

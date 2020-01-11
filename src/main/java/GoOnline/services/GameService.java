@@ -48,10 +48,12 @@ public class GameService {
         return g.getGameData();
     }
 
-    public List<Move> getGameMoves(int gameID) {
+    public List<MoveDTO> getGameMoves(int gameID) {
         Game g = gameRepository.getGame(gameID);
         if (g == null) return new ArrayList<>();
-        return g.getMoves();
+        List<MoveDTO> result = new ArrayList<>();
+        for (Move m : g.getMoves()) result.add(m.getDTO());
+        return result;
     }
 
     /**
@@ -107,13 +109,13 @@ public class GameService {
         return new ArrayList<>();
     }
 
-    public ScoreDTO getScore(String username){
+    public ScoreDTO getScore(String username) {
         Player p = userService.getPlayer(username);
-        if(p!=null){
+        if (p != null) {
             ScoreDTO s = new ScoreDTO();
             Point point = p.getScore();
-            s.setOwn((int)point.getX());
-            s.setOpponent((int)point.getY());
+            s.setOwn((int) point.getX());
+            s.setOpponent((int) point.getY());
             return s;
         }
         return null;
