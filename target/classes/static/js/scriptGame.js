@@ -7,6 +7,7 @@ window.onload = function () {
     gameID = $('#ID').val();
     getMoves(gameID);
     connect(gameID);
+    setPlayerName();
 };
 
 
@@ -45,7 +46,9 @@ function sendMove(x, y, type) {
 
 function decodeMove(moveList) {
     for (var i = 0; i < moveList.length; i++) {
+        setPlayerName();
         var move = moveList[i];
+        alert(move.commandType);
         switch (move.commandType) {
             case 'MOVE': {
                 if (move.color.localeCompare("WHITE")) placePawn(move.x, move.y, true);
@@ -174,7 +177,7 @@ function setScore(score, me) {
     }
 }
 
-function setPlayerName(name) {
+function setPlayerName() {
     var label = document.getElementById("labelPlayerName");
-    label.innerText = score;
+    label.innerText = username;
 }
