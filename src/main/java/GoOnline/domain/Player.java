@@ -30,9 +30,7 @@ public class Player implements UserDetails {
 
 
     public List<Move> move(int x, int y) throws Exception {
-        System.out.println(" jesteśmy w move od gracza username: " + username);
         if (game == null) return new ArrayList<>();
-        System.out.println("oho - tu nie doszliśmy");
         Move m = new Move();
         m.setX(x);
         m.setY(y);

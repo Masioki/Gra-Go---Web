@@ -137,9 +137,19 @@ public class GameService {
     }
 
     public void botMove(Game game) {
-        System.out.println("trochę informacji o grze ID: "+ game.getGameID());
-        System.out.println("jesteśmy w Game service ruch bota !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        //TODO - wywołuje się zawsze
+        if(!game.isWithBot())
+        {
+            return;
+        }
+        if(game.getPlayers().size()==2)
+        {
+            game.getPlayers().remove(1);
+        }
         Bot bot = new Bot(game.getBoardSize(), game);
+        bot.setPassword("XX");
+        game.addPlayer(bot);
+        //Bot bot = new Bot(game.getBoardSize(), game);
         List<Move> moves = bot.doMove();
         System.out.println(moves.size());
         List<MoveDTO> moveDtoList = new ArrayList<MoveDTO>();
