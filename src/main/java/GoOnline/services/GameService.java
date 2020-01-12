@@ -137,8 +137,11 @@ public class GameService {
     }
 
     public void botMove(Game game) {
+        System.out.println("trochę informacji o grze ID: "+ game.getGameID());
+        System.out.println("jesteśmy w Game service ruch bota !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Bot bot = new Bot(game.getBoardSize(), game);
         List<Move> moves = bot.doMove();
+        System.out.println(moves.size());
         List<MoveDTO> moveDtoList = new ArrayList<MoveDTO>();
         for (Move move : moves) {
             MoveDTO moveDTO = move.getDTO();

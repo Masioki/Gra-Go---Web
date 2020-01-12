@@ -20,6 +20,7 @@ public class Bot extends Player {
 
     public Bot(int boardSize, Game game) {
         this.game = game;
+        System.out.println("Zobaczmy czy ID się zgadza: " + game.getGameID());
         setUsername("bot");
         //username = "bot";
         board = new HashMap<>();
@@ -45,6 +46,7 @@ public class Bot extends Player {
 
     //TODO - zmieniony kod
     public List<Move> doMove() {
+        System.out.println("Bot wykonuje ruch");
         int max = 1;
         Point bestPoint = new Point(0, 0);
 
@@ -108,6 +110,7 @@ public class Bot extends Player {
 
     //TODO - zmieniony kod
     private List<Move> moveToRandom() {
+        System.out.println("Bot wykonuje randomowy ruch");
         List<Point> emptyPlaceList = new ArrayList<>();
         //lista którą powinna nam dać game
         List<Move> m = null;
@@ -118,15 +121,19 @@ public class Bot extends Player {
         while (emptyPlaceList.size() != 0) {
             int index = (int) (Math.random() * (emptyPlaceList.size() - 1));
             try {
+                System.out.println("jesteśmy tu");
+                System.out.println((int) emptyPlaceList.get(index).getX() + "  " + (int) emptyPlaceList.get(index).getY());
                 m = move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY());
                 done = true;
                 break;
             } catch (Exception e) {
+                System.out.println("nie tak miało być");
                 emptyPlaceList.remove(index);
             }
 
         }
         if (!done) try {
+            System.out.println("nie tak miało być");
             pass();
         } catch (Exception e) {
             e.printStackTrace();

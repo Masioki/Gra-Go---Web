@@ -141,10 +141,13 @@ public class Game {
     }
 
     public synchronized List<Move> move(Move move) throws Exception {
+        System.out.println("jesteśmy w grze");
+        System.out.println("ostatnio wykonał ruch: " + lastMoved);
         setGameLogic();
         int x = move.getX();
         int y = move.getY();
         Player player = move.getPlayer();
+        System.out.println("próbuje wykonać ruch: " + player.getUsername());
         List<Move> resultMoves = new ArrayList<>();
         Map<Point, GridState> previous = gameLogic.getBoard();
         if (gameStatus != GameStatus.FINISHED && isPlayerTurn(player) && gameLogic.placePawn(x, y, player.getUsername().equals(ownerUsername))) {
