@@ -40,6 +40,7 @@ public class Game {
 
     private boolean withBot;
 
+
     //mówimy hibernetowi że tej zmiennej ma nie ruszać
     @Transient
     private GameLogic gameLogic;

@@ -24,21 +24,22 @@ public class Bot extends Player {
                 board.put(new Point(i, j), EMPTY);
             }
         }
-        Runnable r = () -> {
+        //TODO - zmieniony kod
+        /*Runnable r = () -> {
             while (game.getGameStatus() == GameStatus.IN_PROGRESS) {
                 if (game.isPlayerTurn(this)) doMove();
             }
         };
         Thread t = new Thread(r);
-        t.start();
+        t.start();*/
     }
 
     //TODO
     public void action(int x, int y, String username, GridState color, GameCommandType type) {
         if (type == GameCommandType.MOVE) board.replace(new Point(x, y), color);
     }
-
-    private void doMove() {
+    //TODO - zmieniony kod
+    public List<Move> doMove() {
         int max = 1;
         Point bestPoint = new Point(0, 0);
 
@@ -54,17 +55,16 @@ public class Bot extends Player {
             }
         }
         if (max == 1) {
-            moveToRandom();
-            return;
+            return moveToRandom();
         }
 
         int x = (int) Math.round(bestPoint.getX());
         int y = (int) Math.round(bestPoint.getY());
 
         try {
-            move(x, y);
+            return move(x, y);
         } catch (Exception e) {
-            moveToRandom();
+             return moveToRandom();
         }
     }
 
@@ -100,9 +100,11 @@ public class Bot extends Player {
         }
         return sum;
     }
-
-    private void moveToRandom() {
+    //TODO - zmieniony kod
+    private List<Move> moveToRandom() {
         List<Point> emptyPlaceList = new ArrayList<>();
+        //lista którą powinna nam dać game
+        List<Move> m = null;
         for (Point p : board.keySet()) {
             if (board.get(p) == EMPTY) emptyPlaceList.add(p);
         }
@@ -110,7 +112,7 @@ public class Bot extends Player {
         while (emptyPlaceList.size() != 0) {
             int index = (int) (Math.random() * (emptyPlaceList.size() - 1));
             try {
-                List<Move> m = move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY());
+                m = move((int) emptyPlaceList.get(index).getX(), (int) emptyPlaceList.get(index).getY());
                 done = true;
                 break;
             } catch (Exception e) {
@@ -123,6 +125,6 @@ public class Bot extends Player {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return m;
     }
 }

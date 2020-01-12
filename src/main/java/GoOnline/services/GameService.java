@@ -1,5 +1,6 @@
 package GoOnline.services;
 
+import GoOnline.domain.Bot;
 import GoOnline.domain.Game.Game;
 import GoOnline.domain.Game.GameStatus;
 import GoOnline.domain.Game.Move;
@@ -136,9 +137,14 @@ public class GameService {
     }
 
     public void botMove(Game game){
-
-
-
-        template.convertAndSend("/topic/stomp" + game.getGameID(), moveDtoList);
+        Bot bot = new Bot(game.getBoardSize(), game);
+        List<Move> moves = bot.doMove();
+        List<MoveDTO> moveDtoList = new ArrayList<MoveDTO>();
+        for(Move move : moves)
+        {
+            MoveDTO moveDTO = move.getDTO();
+            moveDtoList.add(moveDTO);
+        }
+        template.convertAndSend("/topic/stomp/" + game.getGameID(), moveDtoList);
     }
 }
