@@ -9,6 +9,7 @@ import GoOnline.dto.MoveDTO;
 import GoOnline.dto.ScoreDTO;
 import GoOnline.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -23,6 +24,9 @@ public class GameService {
     private GameRepository gameRepository;
 
     @Autowired
+    private SimpMessagingTemplate template;
+
+    @Autowired
     private UserService userService;
 
     /**
@@ -31,7 +35,7 @@ public class GameService {
      * @param name username
      * @return gameID
      */
-    public int createGame(String name) {
+    public int createGame(String name, boolean withBot) {
         Player p = userService.getPlayer(name);
         Game g = new Game(p, 19);
         if (p.getGame() != null) {
@@ -39,6 +43,7 @@ public class GameService {
             gameRepository.save(p.getGame());
         }
         p.setGame(g);
+        if(withBot) g.setWithBot(true);
         return gameRepository.save(g);
     }
 
@@ -94,11 +99,13 @@ public class GameService {
                 List<MoveDTO> result = new ArrayList<>();
                 for (Move m : moveList) result.add(m.getDTO());
                 gameRepository.save(p.getGame());
+                botMove(p.getGame());
                 return result;
             }
             case "PASS" -> {
                 Move res = p.pass();
                 gameRepository.save(p.getGame());
+                botMove(p.getGame());
                 return Collections.singletonList(res.getDTO());
             }
             case "SURRENDER" -> {
@@ -126,5 +133,12 @@ public class GameService {
         Game g = gameRepository.getGame(gameID);
         if (g != null) return g.getOwner().getUsername().equals(username);
         return false;
+    }
+
+    public void botMove(Game game){
+
+
+
+        template.convertAndSend("/topic/stomp" + game.getGameID(), moveDtoList);
     }
 }

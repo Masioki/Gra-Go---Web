@@ -38,6 +38,8 @@ public class Game {
 
     private int movesCount;
 
+    private boolean withBot;
+
     //mówimy hibernetowi że tej zmiennej ma nie ruszać
     @Transient
     private GameLogic gameLogic;
@@ -335,5 +337,14 @@ public class Game {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public boolean isWithBot() {
+        return withBot;
+    }
+
+    public void setWithBot(boolean withBot) {
+        this.withBot = withBot;
+        if (gameStatus == GameStatus.WAITING) gameStatus = GameStatus.IN_PROGRESS;
     }
 }

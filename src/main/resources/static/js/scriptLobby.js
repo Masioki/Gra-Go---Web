@@ -14,6 +14,6 @@ function joinGame(gameID) {
 }
 function playWithCp() {
     //TODO - wywołanie bota
-    window.location.replace('/game/create');
+    window.location.replace('/game/create?bot=true');
 }
 
