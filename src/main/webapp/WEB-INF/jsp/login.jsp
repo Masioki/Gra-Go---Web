@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!--dolaczamy plik css z opisem graficznym strony-->
-    <link href="${pageContext.request.contextPath}/css/basicStyleSheet.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/css/basicStyleSheet.css" rel="stylesheet" type="text/css"/>
     <title>Spring Security Example </title>
 </head>
 <body>
@@ -29,7 +29,9 @@
         <br/>
         <div><form:label path="password"> PASSWORD: <form:input path="password" type="password" name="password"/>
         </form:label></div>
-        <div><button type="submit"  value="sig in">SIGN IN</button></div>
+        <div>
+            <button type="submit" value="sig in">SIGN IN</button>
+        </div>
     </form:form>
     <button type="submit" onclick="location.href='/register'" value="register">REGISTER PAGE</button>
     <br/>

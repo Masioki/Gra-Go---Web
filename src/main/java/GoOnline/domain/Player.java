@@ -45,7 +45,7 @@ public class Player implements UserDetails {
         return game.pass(this);
     }
 
-    public Move surrender() throws Exception{
+    public Move surrender() throws Exception {
         if (game == null) throw new Exception("no available game");
         return game.surrender(this);
     }

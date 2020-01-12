@@ -52,7 +52,7 @@
             <button class="przyciskMenu" onclick=sendMove(0,0,'PASS')>
                 PAUSE
             </button>
-            <button class="przyciskMenu"  onclick=sendMove(0,0,'SURRENDER')>
+            <button class="przyciskMenu" onclick=sendMove(0,0,'SURRENDER')>
                 SURRENDER
             </button>
         </section>

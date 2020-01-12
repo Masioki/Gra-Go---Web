@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static GoOnline.domain.Game.GridState.*;
 

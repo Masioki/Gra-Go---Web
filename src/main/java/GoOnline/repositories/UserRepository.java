@@ -1,16 +1,11 @@
 package GoOnline.repositories;
 
-import GoOnline.domain.Game.Game;
 import GoOnline.domain.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
 
 @Repository
 public class UserRepository {
@@ -32,7 +27,7 @@ public class UserRepository {
 
     public void save(Player player) {
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             System.out.println("zapisuje");
             session.saveOrUpdate(player);

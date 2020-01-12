@@ -26,7 +26,7 @@
             <h2>
                 ACTIVE GAMES
             </h2>
-            <button class="przyciskMenu" onclick="location.href='/game/create'">
+            <button class="przyciskMenu" onclick="location.href='/game/create?bot=false'">
                 CREATE GAME
             </button>
             <br/>
@@ -42,8 +42,9 @@
                 LOBBY LIST
             </h2>
             <c:forEach items="${gamesList}" var="gameData">
-                <button class="przyciskLobby" onclick="location.href='/game/join/${gameData.gameID}'"> <!-- onclick="chooseGame(this.getText())" -->
-                    ${gameData.username}
+                <button class="przyciskLobby" onclick="location.href='/game/join/${gameData.gameID}'">
+                    <!-- onclick="chooseGame(this.getText())" -->
+                        ${gameData.username}
                 </button>
             </c:forEach>
         </section>

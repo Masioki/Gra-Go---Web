@@ -1,10 +1,14 @@
 package GoOnline.domain;
 
-import GoOnline.domain.Game.*;
+import GoOnline.domain.Game.Game;
+import GoOnline.domain.Game.GridState;
+import GoOnline.domain.Game.Move;
 
-import java.util.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static GoOnline.domain.Game.GridState.BLACK;
 import static GoOnline.domain.Game.GridState.EMPTY;
@@ -38,6 +42,7 @@ public class Bot extends Player {
     public void action(int x, int y, String username, GridState color, GameCommandType type) {
         if (type == GameCommandType.MOVE) board.replace(new Point(x, y), color);
     }
+
     //TODO - zmieniony kod
     public List<Move> doMove() {
         int max = 1;
@@ -64,7 +69,7 @@ public class Bot extends Player {
         try {
             return move(x, y);
         } catch (Exception e) {
-             return moveToRandom();
+            return moveToRandom();
         }
     }
 
@@ -100,6 +105,7 @@ public class Bot extends Player {
         }
         return sum;
     }
+
     //TODO - zmieniony kod
     private List<Move> moveToRandom() {
         List<Point> emptyPlaceList = new ArrayList<>();

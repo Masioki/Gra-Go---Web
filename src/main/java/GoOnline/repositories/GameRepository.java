@@ -2,12 +2,10 @@ package GoOnline.repositories;
 
 import GoOnline.domain.Game.Game;
 import GoOnline.domain.Game.GameStatus;
-import GoOnline.domain.Player;
 import GoOnline.dto.GameData;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

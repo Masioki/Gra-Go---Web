@@ -34,8 +34,6 @@ public class Move {
     private int number;
 
 
-
-
     public MoveDTO getDTO() {
         MoveDTO m = new MoveDTO();
         m.setUsername(player.getUsername());

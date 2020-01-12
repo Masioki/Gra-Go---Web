@@ -44,7 +44,7 @@ public class GameService {
             gameRepository.save(p.getGame());
         }
         p.setGame(g);
-        if(withBot) g.setWithBot(true);
+        if (withBot) g.setWithBot(true);
         return gameRepository.save(g);
     }
 
@@ -136,15 +136,15 @@ public class GameService {
         return false;
     }
 
-    public void botMove(Game game){
+    public void botMove(Game game) {
         Bot bot = new Bot(game.getBoardSize(), game);
         List<Move> moves = bot.doMove();
         List<MoveDTO> moveDtoList = new ArrayList<MoveDTO>();
-        for(Move move : moves)
-        {
+        for (Move move : moves) {
             MoveDTO moveDTO = move.getDTO();
             moveDtoList.add(moveDTO);
         }
+        gameRepository.save(game);
         template.convertAndSend("/topic/stomp/" + game.getGameID(), moveDtoList);
     }
 }
