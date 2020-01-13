@@ -1,6 +1,7 @@
 var stompClient = null;
 var gameID = null;
 var username = null;
+var surrender = 0;
 
 window.onload = function () {
     tableCreate();
@@ -33,6 +34,10 @@ function connect(ID) {
 
 //MOVE, PASS, SURRENDER
 function sendMove(x, y, type) {
+    if(type == 'SURRENDER')
+    {
+        surrender=1;
+    }
     if (stompClient != null && gameID != null) {
         stompClient.send('/stomp/' + gameID, {}, JSON.stringify({
             'x': x,
@@ -64,8 +69,30 @@ function decodeMove(moveList) {
                 break;
             }
             case 'WIN' : {
-                if (move.username.localeCompare(username)) win(true);
-                else win(false);
+                if(surrender)
+                {
+                    win(false);
+                }
+                else
+                {
+                    var playerPoints = document.getElementById("labelPlayerScore").textContent;
+                    var enemyPoints = document.getElementById("labelEnemyScore").textContent;
+                    if (playerPoints > enemyPoints)
+                    {
+                        win(true);
+                    }
+                    else
+                    {
+                        if(playerPoints==enemyPoints)
+                        {
+                            draw();
+                        }
+                        else
+                        {
+                            win(false);
+                        }
+                    }
+                }
                 break;
             }
             case 'DRAW': {
@@ -95,10 +122,12 @@ function surrender(me) {
     } else {
         alert("You won !");
     }
+    window.location.replace('/game/lobby');
 }
 
 function draw() {
     alert("Its draw.... :/")
+    window.location.replace('/game/lobby');
 }
 
 function win(me) {
@@ -107,6 +136,7 @@ function win(me) {
     } else {
         alert("You lost :/");
     }
+    window.location.replace('/game/lobby');
 }
 
 function tableCreate() {
