@@ -138,13 +138,11 @@ public class GameService {
 
     public void botMove(Game game) {
         //TODO - wywołuje się zawsze
-        if(!game.isWithBot())
-        {
+        if (!game.isWithBot()) {
             return;
         }
-        if(game.getPlayers().size()==2)
-        {
-            game.getPlayers().remove(1);
+        if (game.getPlayers().size() == 2) {
+            game.getPlayers().removeIf(p -> !p.getUsername().equals(game.getOwnerUsername()));
         }
         Bot bot = new Bot(game.getBoardSize(), game);
         bot.setPassword("XX");

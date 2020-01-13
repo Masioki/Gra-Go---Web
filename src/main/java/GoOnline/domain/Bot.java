@@ -7,7 +7,7 @@ import GoOnline.domain.Game.Move;
 import javax.persistence.Transient;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,34 +19,18 @@ public class Bot extends Player {
     @Transient
     private Map<Point, GridState> board;
 
-    public Bot()
-    {
+    public Bot() {
 
     }
+
     public Bot(int boardSize, Game game) {
         setGame(game);
         setUsername("bot");
-        //username = "bot";
-        board = new HashMap<>();
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                board.put(new Point(i, j), EMPTY);
-            }
-        }
-        //TODO - zmieniony kod
-        /*Runnable r = () -> {
-            while (game.getGameStatus() == GameStatus.IN_PROGRESS) {
-                if (game.isPlayerTurn(this)) doMove();
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();*/
+        List<Move> moves = game.getMoves();
+        moves.sort(Comparator.comparingInt(Move::getNumber));
+        board = game.getBoard(moves);
     }
 
-    //TODO
-    public void action(int x, int y, String username, GridState color, GameCommandType type) {
-        if (type == GameCommandType.MOVE) board.replace(new Point(x, y), color);
-    }
 
     //TODO - zmieniony kod
     public List<Move> doMove() {

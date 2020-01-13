@@ -70,16 +70,7 @@ public class Game {
             lastMoved = move.getPlayer().getUsername();
             pass = move.getMoveType().equals(MoveType.PASS);
         });
-        /*
-        for(Move m : moves){
-            if(m.getNumber() == movesCount){
-                lastMoved = m.getPlayer().getUsername();
-                pass = m.getMoveType().equals(MoveType.PASS);
-                break;
-            }
-        }
-        System.out.println(lastMoved);
-*/
+
         gameLogic = new GameLogic(boardSize);
         moves.sort(Comparator.comparingInt(Move::getNumber));
         gameLogic.setGridStateMap(getBoard(moves));
