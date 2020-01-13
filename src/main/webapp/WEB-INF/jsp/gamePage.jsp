@@ -29,23 +29,19 @@
                 PLAYER:
             </label>
             <br/>
-            <label class="specialLabel" id="labelPlayerName">
-                nickname...
-            </label>
-            <br/>
             <label class="specialLabel">
                 POINTS:
             </label>
             <br/>
-            <label id="labelPlayerScore">
+            <label id="labelPlayerScore" class="specialLabel">
                 0
             </label>
             <br>
-            <label class="labelSpecialLabel">
+            <label class="labelSpecialLabel" class="specialLabel">
                 ENEMY POINTS
             </label>
             <br>
-            <label id="labelEnemyScore">
+            <label id="labelEnemyScore" class="specialLabel">
                 0
             </label>
             <br/>

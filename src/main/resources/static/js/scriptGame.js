@@ -7,7 +7,6 @@ window.onload = function () {
     gameID = $('#ID').val();
     getMoves(gameID);
     connect(gameID);
-    setPlayerName();
 };
 
 
@@ -46,7 +45,6 @@ function sendMove(x, y, type) {
 
 function decodeMove(moveList) {
     for (var i = 0; i < moveList.length; i++) {
-        setPlayerName();
         var move = moveList[i];
         switch (move.commandType) {
             case 'MOVE': {
