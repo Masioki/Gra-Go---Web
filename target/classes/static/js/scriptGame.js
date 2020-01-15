@@ -1,7 +1,7 @@
 var stompClient = null;
 var gameID = null;
 var username = null;
-var surrender = 0;
+var surrenderVar = 0;
 
 window.onload = function () {
     tableCreate();
@@ -34,9 +34,8 @@ function connect(ID) {
 
 //MOVE, PASS, SURRENDER
 function sendMove(x, y, type) {
-    if(type == 'SURRENDER')
-    {
-        surrender=1;
+    if (type === 'SURRENDER') {
+        surrenderVar = 1;
     }
     if (stompClient != null && gameID != null) {
         stompClient.send('/stomp/' + gameID, {}, JSON.stringify({
@@ -69,26 +68,17 @@ function decodeMove(moveList) {
                 break;
             }
             case 'WIN' : {
-                if(surrender)
-                {
+                if (surrenderVar > 0) {
                     win(false);
-                }
-                else
-                {
+                } else {
                     var playerPoints = document.getElementById("labelPlayerScore").textContent;
                     var enemyPoints = document.getElementById("labelEnemyScore").textContent;
-                    if (playerPoints > enemyPoints)
-                    {
+                    if (playerPoints > enemyPoints) {
                         win(true);
-                    }
-                    else
-                    {
-                        if(playerPoints==enemyPoints)
-                        {
+                    } else {
+                        if (playerPoints === enemyPoints) {
                             draw();
-                        }
-                        else
-                        {
+                        } else {
                             win(false);
                         }
                     }
