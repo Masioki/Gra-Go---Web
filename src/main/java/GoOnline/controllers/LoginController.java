@@ -20,6 +20,10 @@ public class LoginController implements ErrorController {
     @Autowired
     private UserService service;
 
+    @GetMapping("/")
+    public String defaultUrl(){
+        return "redirect:/login";
+    }
 
     @GetMapping("/login")
     public String getStartPage(Model model) {

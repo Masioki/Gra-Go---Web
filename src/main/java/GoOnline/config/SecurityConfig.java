@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/game").hasRole("USER").anyRequest().authenticated()
                 .antMatchers("/stomp/**", "/stompEndpoint", "/stomp").permitAll()
                 .and()
-                .formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/game/lobby")
+                .formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/game/lobby",true)
                 .and()
                 .logout().permitAll()
                 .and()
