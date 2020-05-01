@@ -14,11 +14,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        assert config != null;
         config.enableSimpleBroker("/topic");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        assert registry != null;
         registry.addEndpoint("/gameStompEndpoint").withSockJS();
     }
 

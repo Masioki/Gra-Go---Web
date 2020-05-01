@@ -65,7 +65,6 @@ public class GameController {
         }
         model.addAttribute("gameID", gameID);
         model.addAttribute("gameData", gameService.getGameData(gameID));
-        // model.addAttribute("moves",gameService.getGameMoves(gameID));
         return "gamePage";
     }
 
